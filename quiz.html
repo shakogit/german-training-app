@@ -1,6 +1,580 @@
 
-<h1>Hello from quiz page<h1/>
-  <!-- quiz.html-ის შიგნით -->
-<a href="./index.html">← Back to index Page!</a>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual German - Separable Verbs Quiz</title>
+    <style>
+        :root {
+            --bg-color: #2c2c2c;
+            --card-bg: #383838;
+            --accent-purple: #a855f7;
+            --pastel-orange: #f97316;
+            --text-white: #ffffff;
+            --text-gray: #b3b3b3;
+            --correct-green: #22c55e;
+            --incorrect-red: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-placeholder {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--text-white);
+            border-bottom: 2px solid var(--accent-purple);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .step-indicator {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOutCard {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+
+        h2 {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .prompt-box {
+            background: rgba(0,0,0,0.15);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-align: center;
+            border-left: 4px solid var(--accent-purple);
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #4a4a4a;
+            color: var(--text-white);
+            border: 2px solid transparent;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .option-btn.correct {
+            background-color: var(--correct-green) !important;
+            border-color: #16a34a;
+        }
+
+        .option-btn.incorrect {
+            background-color: var(--incorrect-red) !important;
+            border-color: #dc2626;
+        }
+
+        .feedback-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .feedback-box.correct {
+            display: block;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid var(--correct-green);
+            color: #4ade80;
+        }
+
+        .feedback-box.incorrect {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid var(--incorrect-red);
+            color: #f87171;
+        }
+
+        .text-paragraph {
+            line-height: 2.2;
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.1);
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .drop-zone {
+            display: inline-block;
+            min-width: 65px;
+            height: 28px;
+            border-bottom: 2px dashed var(--accent-purple);
+            margin: 0 4px;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 24px;
+            font-weight: bold;
+            color: var(--accent-purple);
+            transition: all 0.2s;
+        }
+
+        .drop-zone.hovered {
+            background: rgba(168, 85, 247, 0.2);
+        }
+
+        .drop-zone.filled {
+            border-bottom: none;
+            color: var(--text-white);
+            background: #555;
+            border-radius: 6px;
+            padding: 0 8px;
+        }
+
+        .drag-options-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .drag-item {
+            background: var(--accent-purple);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: grab;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flashcard-box {
+            background: #444;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .flashcard-relation {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .flashcard-word {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .flashcard-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .flashcard-btn {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .flashcard-btn.correct { background-color: var(--correct-green); }
+        .flashcard-btn.incorrect { background-color: var(--incorrect-red); }
+
+        .next-btn {
+            margin-top: 25px;
+            width: 100%;
+            background: var(--pastel-orange);
+            color: var(--text-white);
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: none;
+            text-align: center;
+            transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+        }
+
+        .next-btn:hover {
+            background: #ea580c;
+        }
+
+        .stealth-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #777;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="header">
+        <div class="logo-placeholder">VISUAL GERMAN</div>
+        <div class="step-indicator" id="stepIndicator">Activity 1 of 4</div>
+    </div>
+
+    <!-- ACT 1: Multiple Choice -->
+    <div class="slide active" id="slide1">
+        <h2>Where does the separable prefix go in a standard German sentence?</h2>
+        <div class="options-list">
+            <button class="option-btn" onclick="checkActivity1(this, false)">a) Directly after the verb in position 3.</button>
+            <button class="option-btn" onclick="checkActivity1(this, true)">b) It jumps straight to the VERY END of the sentence.</button>
+        </div>
+        <div class="feedback-box" id="feedback1"></div>
+    </div>
+
+    <!-- ACT 2: Drag and Drop Sentence Completion -->
+    <div class="slide" id="slide2">
+        <h2>Complete the story with the correct verb parts and prefixes:</h2>
+        <div class="text-paragraph">
+            "Heute <span class="drop-zone" data-correct="kaufe" id="zone1"></span> ich im Supermarkt <span class="drop-zone" data-correct="ein" id="zone2"></span>. Später <span class="drop-zone" data-correct="rufe" id="zone3"></span> ich meine Mutter <span class="drop-zone" data-correct="an" id="zone4"></span>."
+        </div>
+        <div class="drag-options-container" id="dragContainer"></div>
+        <div class="feedback-box" id="feedback2"></div>
+    </div>
+
+    <!-- ACT 3: Matching / Translation Iterations -->
+    <div class="slide" id="slide3">
+        <h2>Match the English sentence to correct German (<span id="matchSubStep">1</span>/3):</h2>
+        <div class="prompt-box" id="matchingPrompt">Loading question...</div>
+        <div class="options-list" id="matchingOptions"></div>
+        <div class="feedback-box" id="feedback3"></div>
+    </div>
+
+    <!-- ACT 4: Separable Prefix Challenge Flashcards -->
+    <div class="slide" id="slide4">
+        <h2>Prefix Challenge: Match the verb with its separable prefix!</h2>
+        <div class="flashcard-box" id="flashcardContainer">
+            <div class="flashcard-relation" id="cardRelation">VERB ➔ PREFIX</div>
+            <div class="flashcard-word" id="cardWord">einkaufen</div>
+            <div class="flashcard-options" id="cardOptions"></div>
+        </div>
+        <div class="feedback-box" id="feedback4"></div>
+    </div>
+
+    <button class="next-btn" id="nextBtn" onclick="handleNext()">Next ➔</button>
+
+    <div class="stealth-footer">Visual German Companion App</div>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    const nextBtn = document.getElementById('nextBtn');
+    const stepIndicator = document.getElementById('stepIndicator');
+
+    // --- ACTIVITY 1 LOGIC ---
+    function checkActivity1(button, isCorrect) {
+        const buttons = document.querySelectorAll('#slide1 .option-btn');
+        buttons.forEach(btn => btn.disabled = true);
+
+        const feedback = document.getElementById('feedback1');
+        const coreExplanation = "The conjugated verb stays in Position 2, while the separable prefix (like ein-, an-, aus-) jumps all the way to the end of the clause!";
+
+        if (isCorrect) {
+            button.classList.add('correct');
+            feedback.className = "feedback-box correct";
+            feedback.innerHTML = "<strong>Richtig! 🎉</strong><br>" + coreExplanation;
+        } else {
+            button.classList.add('incorrect');
+            feedback.className = "feedback-box incorrect";
+            feedback.innerHTML = "<strong>Falsch! ❌</strong><br>" + coreExplanation;
+            buttons.forEach(btn => {
+                if (btn.innerText.includes('b)')) btn.style.border = "2px solid var(--correct-green)";
+            });
+        }
+        nextBtn.style.display = 'block';
+    }
+
+    // --- ACTIVITY 2 LOGIC (DRAG & DROP) ---
+    const rawDragWords = ["kaufe", "ein", "rufe", "an"];
+    let successfulDrops = 0;
+
+    function initActivity2() {
+        const container = document.getElementById('dragContainer');
+        container.innerHTML = "";
+        
+        const shuffledWords = [...rawDragWords].sort(() => Math.random() - 0.5);
+        
+        shuffledWords.forEach(word => {
+            const div = document.createElement('div');
+            div.className = 'drag-item';
+            div.draggable = true;
+            div.id = `drag-${word}`;
+            div.innerText = word;
+            div.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', e.target.innerText);
+                e.dataTransfer.setData('source-id', e.target.id);
+            });
+            container.appendChild(div);
+        });
+
+        const dropZones = document.querySelectorAll('.drop-zone');
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                if(!zone.classList.contains('filled')) zone.classList.add('hovered');
+            });
+
+            zone.addEventListener('dragleave', () => zone.classList.remove('hovered'));
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('hovered');
+                
+                const draggedText = e.dataTransfer.getData('text/plain');
+                const sourceId = e.dataTransfer.getData('source-id');
+                const correctAnswer = zone.getAttribute('data-correct');
+
+                if (draggedText === correctAnswer) {
+                    zone.innerText = draggedText;
+                    zone.classList.add('filled');
+                    zone.style.background = "rgba(34, 197, 94, 0.2)";
+                    zone.style.border = "1px solid var(--correct-green)";
+                    
+                    document.getElementById(sourceId).style.visibility = 'hidden';
+                    successfulDrops++;
+
+                    if (successfulDrops === dropZones.length) {
+                        const feedback2 = document.getElementById('feedback2');
+                        feedback2.className = "feedback-box correct";
+                        feedback2.innerHTML = "<strong>Ausgezeichnet! 🌟</strong> You built the separable sentences correctly!";
+                        nextBtn.style.display = 'block';
+                    }
+                } else {
+                    zone.style.borderBottom = "2px solid var(--incorrect-red)";
+                    setTimeout(() => {
+                        if(!zone.classList.contains('filled')) zone.style.borderBottom = "2px solid var(--accent-purple)";
+                    }, 1000);
+                }
+            });
+        });
+    }
+
+    // --- ACTIVITY 3 LOGIC (MATCHING) ---
+    const matchPool = [
+        { en: "I shop at the supermarket.", de: "Ich kaufe im Supermarkt ein.", wrong: ["Ich einkaufe im Supermarkt.", "Ich kaufe ein im Supermarkt."] },
+        { en: "She calls her friend.", de: "Sie ruft ihren Freund an.", wrong: ["Sie anruft ihren Freund.", "Sie ruft an ihren Freund."] },
+        { en: "We get up early.", de: "Wir stehen früh auf.", wrong: ["Wir aufstehen früh.", "Wir stehen auf früh."] }
+    ];
+    
+    let matchRound = 1;
+
+    function initActivity3() {
+        document.getElementById('matchSubStep').innerText = matchRound;
+        const currentMatchTarget = matchPool[matchRound - 1];
+        document.getElementById('matchingPrompt').innerText = currentMatchTarget.en;
+        
+        const optionsContainer = document.getElementById('matchingOptions');
+        optionsContainer.innerHTML = "";
+        document.getElementById('feedback3').style.display = 'none';
+
+        let choices = [currentMatchTarget.de, currentMatchTarget.wrong[0], currentMatchTarget.wrong[1]];
+        choices.sort(() => Math.random() - 0.5);
+
+        choices.forEach(item => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = item;
+            btn.onclick = () => {
+                const allBtns = optionsContainer.querySelectorAll('.option-btn');
+                allBtns.forEach(b => b.disabled = true);
+                
+                const fdb = document.getElementById('feedback3');
+                if(item === currentMatchTarget.de) {
+                    btn.classList.add('correct');
+                    fdb.className = "feedback-box correct";
+                    fdb.innerHTML = "<strong>Correct! 🎯</strong> Prefix is at the end.";
+                } else {
+                    btn.classList.add('incorrect');
+                    fdb.className = "feedback-box incorrect";
+                    fdb.innerHTML = `<strong>Falsch!</strong> Remember: Prefix goes to the end!`;
+                    
+                    allBtns.forEach(b => {
+                        if(b.innerText === currentMatchTarget.de) b.classList.add('correct');
+                    });
+                }
+                nextBtn.style.display = 'block';
+            };
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    // --- ACTIVITY 4 LOGIC (FLASHCARDS) ---
+    const flashPool = [
+        { from: "FIND THE PREFIX FOR", word: "__kaufen", right: "ein-", options: ["ein-", "aus-", "an-", "mit-"] },
+        { from: "FIND THE PREFIX FOR", word: "__rufen", right: "an-", options: ["auf-", "an-", "ab-", "mit-"] },
+        { from: "FIND THE PREFIX FOR", word: "__stehen", right: "auf-", options: ["ein-", "auf-", "aus-", "vor-"] },
+        { from: "FIND THE PREFIX FOR", word: "__kommen", right: "mit-", options: ["nach-", "mit-", "zu-", "an-"] }
+    ];
+    let cardIndex = 0;
+
+    function renderFlashcard() {
+        if(cardIndex >= flashPool.length) {
+            document.getElementById('flashcardContainer').innerHTML = "<h3 style='padding:20px; color:var(--correct-green);'>🎉 Quiz Completed!</h3><p style='margin-top:10px; color:var(--text-gray);'>You mastered German Separable Verbs!</p>";
+            nextBtn.style.display = 'block';
+            return;
+        }
+        
+        const currentCard = flashPool[cardIndex];
+        document.getElementById('cardRelation').innerText = currentCard.from;
+        document.getElementById('cardWord').innerText = currentCard.word;
+        
+        const optionsGrid = document.getElementById('cardOptions');
+        optionsGrid.innerHTML = "";
+
+        currentCard.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'flashcard-btn';
+            btn.innerText = opt;
+            btn.onclick = () => {
+                const allCardBtns = optionsGrid.querySelectorAll('.flashcard-btn');
+                allCardBtns.forEach(b => b.disabled = true);
+
+                if(opt === currentCard.right) {
+                    btn.classList.add('correct');
+                    setTimeout(() => {
+                        document.getElementById('flashcardContainer').style.animation = "fadeOutCard 0.3s ease forwards";
+                        setTimeout(() => {
+                            cardIndex++;
+                            document.getElementById('flashcardContainer').style.animation = "fadeIn 0.3s ease forwards";
+                            renderFlashcard();
+                        }, 300);
+                    }, 800);
+                } else {
+                    btn.classList.add('incorrect');
+                    allCardBtns.forEach(b => { if(b.innerText === currentCard.right) b.classList.add('correct'); });
+                    setTimeout(() => {
+                        cardIndex++;
+                        renderFlashcard();
+                    }, 1800);
+                }
+            };
+            optionsGrid.appendChild(btn);
+        });
+    }
+
+    function handleNext() {
+        if (currentStep === 3 && matchRound < 3) {
+            matchRound++;
+            initActivity3();
+            nextBtn.style.display = 'none';
+            return;
+        }
+        
+        document.getElementById(`slide${currentStep}`).classList.remove('active');
+        currentStep++;
+        
+        if (currentStep <= totalSteps) {
+            const nextSlideEl = document.getElementById(`slide${currentStep}`);
+            if (nextSlideEl) nextSlideEl.classList.add('active');
+            stepIndicator.innerText = `Activity ${currentStep} of ${totalSteps}`;
+            nextBtn.style.display = 'none';
+
+            if(currentStep === 3) initActivity3();
+            if(currentStep === 4) { cardIndex = 0; renderFlashcard(); }
+        } else {
+            stepIndicator.innerText = "Done! 🚀";
+            nextBtn.style.display = 'none';
+        }
+    }
+
+    initActivity2();
+</script>
+
+</body>
+</html>
 
   
