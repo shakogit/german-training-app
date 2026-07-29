@@ -57,13 +57,7 @@
         </div>
 
     <!-- Service Worker-ის რეგისტრაცია -->
-    <script>
-    window.addEventListener('pageshow', function(event) {
-    // თუ გვერდი ბრაუზერის მეხსიერებიდან (Back ღილაკით) აღდგა
-    if (event.persisted) {
-        window.location.reload(); // ავტომატურად გაანახლებს, რომ ბმული არ გაქრეს
-    }
-});
+    <script>   
         
        if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
