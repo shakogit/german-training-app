@@ -2,6 +2,7 @@ const CACHE_NAME = 'deutsch-app-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './quiz.html',
   './manifest.json'
 ];
 
