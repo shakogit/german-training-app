@@ -1,7 +1,68 @@
-გერმანული ენის სავარჯიშოები
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>გერმანული ენის სავარჯიშოები</title>
     
+    <!-- PWA-ს მიერთება -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c3e50">
 
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f4f6f8;
+            color: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 { font-size: 1.6rem; margin-bottom: 0.5rem; color: #1a252f; }
+        p { color: #627d98; font-size: 1rem; line-height: 1.5; }
+        .badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
 
-    
-        🇩🇪 Deutsch Training
-        PWA აპლიკაცია მზადების პროცესშია...
+    <div class="card">
+        <h1>🇩🇪 Deutsch Training</h1>
+        <p>PWA აპლიკაციის პროტოტიპი წარმატებით გაეშვა!</p>
+        <div class="badge">Offline მზადყოფნა: ACTIVE</div>
+    </div>
+
+    <!-- Service Worker-ის რეგისტრაცია -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker დარეგისტრირდა!', reg))
+                    .catch(err => console.log('Service Worker შეცდომა:', err));
+            });
+        }
+    </script>
+</body>
+</html>
