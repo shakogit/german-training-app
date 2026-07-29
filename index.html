@@ -53,11 +53,18 @@
         <p>PWA: The app prototype was successfully launched!</p>
         <div class="badge">Offline Readiness: ACTIVE</div>
         <div>
-        <a href="quiz.html" class="start-btn">Go to Quiz 🚀</a>div/>
+        <a href="./quiz.html" class="start-btn">Go to Quiz 🚀</a>div/>
         </div>
 
     <!-- Service Worker-ის რეგისტრაცია -->
     <script>
+    window.addEventListener('pageshow', function(event) {
+    // თუ გვერდი ბრაუზერის მეხსიერებიდან (Back ღილაკით) აღდგა
+    if (event.persisted) {
+        window.location.reload(); // ავტომატურად გაანახლებს, რომ ბმული არ გაქრეს
+    }
+});
+        
        if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').then(reg => {
