@@ -12,6 +12,7 @@
     "id": "trennbare_verben",
     "title": "Trennbare Verben",
     "level": "A2",
+    "icon": "✂️",
     "description": "Master separable verbs in German.",
     "file": "data/trennbare_verben.json"
   }
