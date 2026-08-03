@@ -1,86 +1,54 @@
 <!DOCTYPE html>
-<html lang="ka">
+<html lang="en">
 <head>
-   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS6B48F50R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS6B48F50R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-ZS6B48F50R');
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>German language train app</title>
-    
-    <!-- PWA-ს მიერთება -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2c3e50">
+    gtag('config', 'G-ZS6B48F50R');
+  </script>
 
-    <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: #f4f6f8;
-            color: #2c3e50;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            max-width: 400px;
-            width: 100%;
-        }
-        h1 { font-size: 1.6rem; margin-bottom: 0.5rem; color: #1a252f; }
-        p { color: #627d98; font-size: 1rem; line-height: 1.5; }
-        .badge {
-            display: inline-block;
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual German - Interactive Practice</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4A90E2">
 </head>
 <body>
 
-    <div class="card">
-        <h1>🇩🇪 Deutsch Training for Beginners</h1>
-        <p>PWA: The app prototype was successfully launched!</p>
-        <div class="badge">Offline Readiness: ACTIVE</div>
-        <div>
-       <a href="./quiz.html">Go to quiz</a>
-        </div>
+  <header class="app-header">
+    <div class="header-container">
+      <h1>🇩🇪 Visual German</h1>
+      <p>Master German grammar interactively</p>
+    </div>
+  </header>
 
-    <!-- Service Worker-ის რეგისტრაცია -->
-    <script>   
-        
-       if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').then(reg => {
-            reg.update(); // აიძულებს Service Worker-ს ყოველ გახსნაზე შეამოწმოს განახლება
-        });
-    });
-}
-        window.addEventListener('pageshow', function(event) {
-    // თუ გვერდი ბრაუზერის მეხსიერებიდან (Back ღილაკით) აღდგა
-    if (event.persisted) {
-        window.location.reload(); // ავტომატურად გაანახლებს, რომ ბმული არ გაქრეს
+  <main class="main-container">
+    <section class="welcome-section">
+      <h2>Select a Topic</h2>
+      <p>Choose a topic below to start practicing:</p>
+    </section>
+
+    <!-- Dynamic Topic Cards Container -->
+    <div id="topics-grid" class="topics-grid">
+      <div class="loading-spinner">Loading topics...</div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    // Register Service Worker for PWA support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('SW Registered:', reg.scope))
+          .catch(err => console.error('SW Error:', err));
+      });
     }
-});
-    </script>
+  </script>
 </body>
 </html>
