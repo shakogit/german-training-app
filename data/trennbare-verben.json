@@ -1,0 +1,52 @@
+{
+  "topicId": "trennbare-verben",
+  "title": "Separable Verbs",
+  "level": "A1-A2",
+  "activity1": {
+    "question": "Where does the separable prefix go in a standard German sentence?",
+    "options": [
+      { "text": "a) Directly after the verb in position 3.", "isCorrect": false },
+      { "text": "b) It jumps straight to the VERY END of the sentence.", "isCorrect": true }
+    ],
+    "explanation": "The conjugated verb stays in Position 2, while the separable prefix (like ein-, an-, aus-) jumps all the way to the end of the clause!"
+  },
+  "activity2": {
+    "sentenceParts": [
+      "Heute ",
+      " ich im Supermarkt ",
+      ". Später ",
+      " ich meine Mutter ",
+      "."
+    ],
+    "dropZones": [
+      { "id": "zone1", "correct": "kaufe" },
+      { "id": "zone2", "correct": "ein" },
+      { "id": "zone3", "correct": "rufe" },
+      { "id": "zone4", "correct": "an" }
+    ],
+    "dragWords": ["kaufe", "ein", "rufe", "an"]
+  },
+  "activity3": [
+    {
+      "en": "I shop at the supermarket.",
+      "de": "Ich kaufe im Supermarkt ein.",
+      "wrong": ["Ich einkaufe im Supermarkt.", "Ich kaufe ein im Supermarkt."]
+    },
+    {
+      "en": "She calls her friend.",
+      "de": "Sie ruft ihren Freund an.",
+      "wrong": ["Sie anruft ihren Freund.", "Sie ruft an ihren Freund."]
+    },
+    {
+      "en": "We get up early.",
+      "de": "Wir stehen früh auf.",
+      "wrong": ["Wir aufstehen früh.", "Wir stehen auf früh."]
+    }
+  ],
+  "activity4": [
+    { "from": "FIND THE PREFIX FOR", "word": "__kaufen", "right": "ein-", "options": ["ein-", "aus-", "an-", "mit-"] },
+    { "from": "FIND THE PREFIX FOR", "word": "__rufen", "right": "an-", "options": ["auf-", "an-", "ab-", "mit-"] },
+    { "from": "FIND THE PREFIX FOR", "word": "__stehen", "right": "auf-", "options": ["ein-", "auf-", "aus-", "vor-"] },
+    { "from": "FIND THE PREFIX FOR", "word": "__kommen", "right": "mit-", "options": ["nach-", "mit-", "zu-", "an-"] }
+  ]
+}

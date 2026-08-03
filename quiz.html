@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visual German - Separable Verbs Quiz</title>
+    <title>Visual German - Interactive Quiz</title>
     <style>
         :root {
             --bg-color: #2c2c2c;
@@ -307,20 +306,15 @@
 
     <!-- ACT 1: Multiple Choice -->
     <div class="slide active" id="slide1">
-        <h2>Where does the separable prefix go in a standard German sentence?</h2>
-        <div class="options-list">
-            <button class="option-btn" onclick="checkActivity1(this, false)">a) Directly after the verb in position 3.</button>
-            <button class="option-btn" onclick="checkActivity1(this, true)">b) It jumps straight to the VERY END of the sentence.</button>
-        </div>
+        <h2 id="act1Question">Loading...</h2>
+        <div class="options-list" id="act1Options"></div>
         <div class="feedback-box" id="feedback1"></div>
     </div>
 
     <!-- ACT 2: Drag and Drop Sentence Completion -->
     <div class="slide" id="slide2">
         <h2>Complete the story with the correct verb parts and prefixes:</h2>
-        <div class="text-paragraph">
-            "Heute <span class="drop-zone" data-correct="kaufe" id="zone1"></span> ich im Supermarkt <span class="drop-zone" data-correct="ein" id="zone2"></span>. Später <span class="drop-zone" data-correct="rufe" id="zone3"></span> ich meine Mutter <span class="drop-zone" data-correct="an" id="zone4"></span>."
-        </div>
+        <div class="text-paragraph" id="act2Paragraph"></div>
         <div class="drag-options-container" id="dragContainer"></div>
         <div class="feedback-box" id="feedback2"></div>
     </div>
@@ -338,7 +332,7 @@
         <h2>Prefix Challenge: Match the verb with its separable prefix!</h2>
         <div class="flashcard-box" id="flashcardContainer">
             <div class="flashcard-relation" id="cardRelation">VERB ➔ PREFIX</div>
-            <div class="flashcard-word" id="cardWord">einkaufen</div>
+            <div class="flashcard-word" id="cardWord">...</div>
             <div class="flashcard-options" id="cardOptions"></div>
         </div>
         <div class="feedback-box" id="feedback4"></div>
@@ -355,13 +349,55 @@
     const nextBtn = document.getElementById('nextBtn');
     const stepIndicator = document.getElementById('stepIndicator');
 
+    let quizData = null;
+    let matchRound = 1;
+    let cardIndex = 0;
+    let successfulDrops = 0;
+
+    // --- 1. DYNAMIC DATA FETCHING ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const topic = urlParams.get('topic') || 'trennbare-verben'; // Default topic
+
+    fetch(`./data/${topic}.json`)
+        .then(response => {
+            if (!response.ok) throw new Error("JSON file not found");
+            return response.json();
+        })
+        .then(data => {
+            quizData = data;
+            initQuiz();
+        })
+        .catch(err => {
+            console.error("Error loading topic:", err);
+            document.getElementById('act1Question').innerText = "Topic not found!";
+        });
+
+    function initQuiz() {
+        initActivity1();
+        initActivity2();
+    }
+
     // --- ACTIVITY 1 LOGIC ---
-    function checkActivity1(button, isCorrect) {
+    function initActivity1() {
+        const act1 = quizData.activity1;
+        document.getElementById('act1Question').innerText = act1.question;
+        const container = document.getElementById('act1Options');
+        container.innerHTML = "";
+
+        act1.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt.text;
+            btn.onclick = () => checkActivity1(btn, opt.isCorrect, act1.explanation);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkActivity1(button, isCorrect, coreExplanation) {
         const buttons = document.querySelectorAll('#slide1 .option-btn');
         buttons.forEach(btn => btn.disabled = true);
 
         const feedback = document.getElementById('feedback1');
-        const coreExplanation = "The conjugated verb stays in Position 2, while the separable prefix (like ein-, an-, aus-) jumps all the way to the end of the clause!";
 
         if (isCorrect) {
             button.classList.add('correct');
@@ -371,22 +407,37 @@
             button.classList.add('incorrect');
             feedback.className = "feedback-box incorrect";
             feedback.innerHTML = "<strong>Falsch! ❌</strong><br>" + coreExplanation;
-            buttons.forEach(btn => {
-                if (btn.innerText.includes('b)')) btn.style.border = "2px solid var(--correct-green)";
+            buttons.forEach((btn, idx) => {
+                if (quizData.activity1.options[idx].isCorrect) {
+                    btn.style.border = "2px solid var(--correct-green)";
+                }
             });
         }
         nextBtn.style.display = 'block';
     }
 
     // --- ACTIVITY 2 LOGIC (DRAG & DROP) ---
-    const rawDragWords = ["kaufe", "ein", "rufe", "an"];
-    let successfulDrops = 0;
-
     function initActivity2() {
+        const act2 = quizData.activity2;
+        const paragraphContainer = document.getElementById('act2Paragraph');
+        paragraphContainer.innerHTML = "";
+
+        // Build sentence dynamically with drop zones
+        act2.sentenceParts.forEach((part, index) => {
+            paragraphContainer.appendChild(document.createTextNode(part));
+            if (act2.dropZones[index]) {
+                const zone = document.createElement('span');
+                zone.className = 'drop-zone';
+                zone.id = act2.dropZones[index].id;
+                zone.setAttribute('data-correct', act2.dropZones[index].correct);
+                paragraphContainer.appendChild(zone);
+            }
+        });
+
         const container = document.getElementById('dragContainer');
         container.innerHTML = "";
         
-        const shuffledWords = [...rawDragWords].sort(() => Math.random() - 0.5);
+        const shuffledWords = [...act2.dragWords].sort(() => Math.random() - 0.5);
         
         shuffledWords.forEach(word => {
             const div = document.createElement('div');
@@ -444,15 +495,8 @@
     }
 
     // --- ACTIVITY 3 LOGIC (MATCHING) ---
-    const matchPool = [
-        { en: "I shop at the supermarket.", de: "Ich kaufe im Supermarkt ein.", wrong: ["Ich einkaufe im Supermarkt.", "Ich kaufe ein im Supermarkt."] },
-        { en: "She calls her friend.", de: "Sie ruft ihren Freund an.", wrong: ["Sie anruft ihren Freund.", "Sie ruft an ihren Freund."] },
-        { en: "We get up early.", de: "Wir stehen früh auf.", wrong: ["Wir aufstehen früh.", "Wir stehen auf früh."] }
-    ];
-    
-    let matchRound = 1;
-
     function initActivity3() {
+        const matchPool = quizData.activity3;
         document.getElementById('matchSubStep').innerText = matchRound;
         const currentMatchTarget = matchPool[matchRound - 1];
         document.getElementById('matchingPrompt').innerText = currentMatchTarget.en;
@@ -461,7 +505,7 @@
         optionsContainer.innerHTML = "";
         document.getElementById('feedback3').style.display = 'none';
 
-        let choices = [currentMatchTarget.de, currentMatchTarget.wrong[0], currentMatchTarget.wrong[1]];
+        let choices = [currentMatchTarget.de, ...currentMatchTarget.wrong];
         choices.sort(() => Math.random() - 0.5);
 
         choices.forEach(item => {
@@ -493,17 +537,10 @@
     }
 
     // --- ACTIVITY 4 LOGIC (FLASHCARDS) ---
-    const flashPool = [
-        { from: "FIND THE PREFIX FOR", word: "__kaufen", right: "ein-", options: ["ein-", "aus-", "an-", "mit-"] },
-        { from: "FIND THE PREFIX FOR", word: "__rufen", right: "an-", options: ["auf-", "an-", "ab-", "mit-"] },
-        { from: "FIND THE PREFIX FOR", word: "__stehen", right: "auf-", options: ["ein-", "auf-", "aus-", "vor-"] },
-        { from: "FIND THE PREFIX FOR", word: "__kommen", right: "mit-", options: ["nach-", "mit-", "zu-", "an-"] }
-    ];
-    let cardIndex = 0;
-
     function renderFlashcard() {
+        const flashPool = quizData.activity4;
         if(cardIndex >= flashPool.length) {
-            document.getElementById('flashcardContainer').innerHTML = "<h3 style='padding:20px; color:var(--correct-green);'>🎉 Quiz Completed!</h3><p style='margin-top:10px; color:var(--text-gray);'>You mastered German Separable Verbs!</p>";
+            document.getElementById('flashcardContainer').innerHTML = "<h3 style='padding:20px; color:var(--correct-green);'>🎉 Quiz Completed!</h3><p style='margin-top:10px; color:var(--text-gray);'>You mastered this topic!</p>";
             nextBtn.style.display = 'block';
             return;
         }
@@ -547,7 +584,7 @@
     }
 
     function handleNext() {
-        if (currentStep === 3 && matchRound < 3) {
+        if (currentStep === 3 && matchRound < quizData.activity3.length) {
             matchRound++;
             initActivity3();
             nextBtn.style.display = 'none';
@@ -570,11 +607,7 @@
             nextBtn.style.display = 'none';
         }
     }
-
-    initActivity2();
 </script>
 
 </body>
 </html>
-
-  
