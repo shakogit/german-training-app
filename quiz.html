@@ -367,7 +367,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const topic = urlParams.get('topic') || 'trennbare-verben'; // Default topic
 
-    fetch(`./data/${topic}.json`)
+fetch(`./${topic}.json`)
         .then(response => {
             if (!response.ok) throw new Error("JSON file not found");
             return response.json();
