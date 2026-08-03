@@ -1,0 +1,30 @@
+{
+  "topicId": "wollen-vs-sollen",
+  "title": "Wollen vs. Sollen (Subtle Difference)",
+  "questions": [
+    {
+      "id": 1,
+      "icon": "📋",
+      "question": "Der Arzt sagt: Ich ___ mehr Wasser trinken.",
+      "options": ["will", "soll"],
+      "answer": "soll",
+      "explanation": "External advice or instruction (doctor's order) -> soll."
+    },
+    {
+      "id": 2,
+      "icon": "🍦",
+      "question": "Es ist heiß! Ich ___ ein Eis essen.",
+      "options": ["will", "soll"],
+      "answer": "will",
+      "explanation": "Personal wish or desire -> will."
+    },
+    {
+      "id": 3,
+      "icon": "💼",
+      "question": "Mein Chef sagt, ich ___ heute arbeiten.",
+      "options": ["will", "soll"],
+      "answer": "soll",
+      "explanation": "Obligation or command from a boss -> soll."
+    }
+  ]
+}
