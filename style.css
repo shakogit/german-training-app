@@ -1,0 +1,143 @@
+/* ==========================================
+   1. Reset & General Styles
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   2. Header & Layout
+   ========================================== */
+.app-header {
+  background: linear-gradient(135deg, #4A90E2, #50E3C2);
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.app-header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.3rem;
+}
+
+.main-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.welcome-section h2 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+}
+
+.welcome-section p {
+  color: #666;
+}
+
+/* ==========================================
+   3. Dynamic Topics Grid & Cards
+   ========================================== */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.topic-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #eef2f5;
+}
+
+.topic-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.topic-icon {
+  font-size: 2rem;
+}
+
+.topic-level {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+}
+
+.topic-title {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.topic-description {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.start-btn {
+  background-color: #4A90E2;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  text-align: center;
+}
+
+.topic-card:hover .start-btn {
+  background-color: #357abd;
+}
+
+/* ==========================================
+   4. Loading & Error States
+   ========================================== */
+.loading-spinner, .error-msg {
+  text-align: center;
+  grid-column: 1 / -1;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.error-msg {
+  color: #d9534f;
+}
