@@ -7,5 +7,12 @@
     "description": "Learn to express desires, intentions, duties, and recommendations in German.",
     "icon": "🎯",
     "file": "wollen_vs_sollen.json"
+  },
+  {
+    "id": "trennbare_verben",
+    "title": "Trennbare Verben",
+    "level": "A2",
+    "description": "Master separable verbs in German.",
+    "file": "data/trennbare_verben.json"
   }
 ]
