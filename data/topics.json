@@ -6,6 +6,6 @@
     "category": "Modal Verbs",
     "description": "Learn to express desires, intentions, duties, and recommendations in German.",
     "icon": "🎯",
-    "file": "data/wollen_vs_sollen.json"
+    "file": "wollen_vs_sollen.json"
   }
 ]
