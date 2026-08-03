@@ -1,30 +1,51 @@
 {
   "topicId": "wollen-vs-sollen",
   "title": "Wollen vs. Sollen (Subtle Difference)",
-  "question": [
+  "activity1": {
+    "question": "Der Arzt sagt: Ich ___ mehr Wasser trinken.",
+    "options": [
+      { "text": "will", "isCorrect": false },
+      { "text": "soll", "isCorrect": true }
+    ],
+    "explanation": "External advice or instruction (doctor's order) -> soll."
+  },
+  "activity2": {
+    "sentenceParts": ["Es ist heiß! Ich ", " ein Eis essen, aber der Arzt sagt, ich ", " mehr Wasser trinken."],
+    "dropZones": [
+      { "id": "zone1", "correct": "will" },
+      { "id": "zone2", "correct": "soll" }
+    ],
+    "dragWords": ["will", "soll", "muss", "kann"]
+  },
+  "activity3": [
     {
-      "id": 1,
-      "icon": "📋",
-      "text": "Der Arzt sagt: Ich ___ mehr Wasser trinken.",
-      "options": ["will", "soll"],
-      "answer": "soll",
-      "explanation": "External advice or instruction (doctor's order) -> soll."
+      "en": "I want to eat an ice cream.",
+      "de": "Ich will ein Eis essen.",
+      "wrong": ["Ich soll ein Eis essen.", "Ich muss ein Eis essen."]
     },
     {
-      "id": 2,
-      "icon": "🍦",
-      "text": "Es ist heiß! Ich ___ ein Eis essen.",
-      "options": ["will", "soll"],
-      "answer": "will",
-      "explanation": "Personal wish or desire -> will."
+      "en": "The doctor says I should drink water.",
+      "de": "Der Arzt sagt, ich soll Wasser trinken.",
+      "wrong": ["Der Arzt sagt, ich will Wasser trinken.", "Der Arzt sagt, ich darf Wasser trinken."]
     },
     {
-      "id": 3,
-      "icon": "💼",
-      "text": "Mein Chef sagt, ich ___ heute arbeiten.",
+      "en": "My boss says I should work today.",
+      "de": "Mein Chef sagt, ich soll heute arbeiten.",
+      "wrong": ["Mein Chef sagt, ich will heute arbeiten.", "Mein Chef sagt, ich kann heute arbeiten."]
+    }
+  ],
+  "activity4": [
+    {
+      "from": "PERSONAL DESIRE",
+      "word": "Wollen",
       "options": ["will", "soll"],
-      "answer": "soll",
-      "explanation": "Obligation or command from a boss -> soll."
+      "right": "will"
+    },
+    {
+      "from": "EXTERNAL ORDER / ADVICE",
+      "word": "Sollen",
+      "options": ["will", "soll"],
+      "right": "soll"
     }
   ]
 }
