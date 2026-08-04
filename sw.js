@@ -1,8 +1,10 @@
-const CACHE_NAME = 'deutsch-app-v20';
+const CACHE_NAME = 'deutsch-app-v21';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './quiz.html',
+  './app.js',
+  './style.css',
   './manifest.json'
 ];
 
