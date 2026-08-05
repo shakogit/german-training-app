@@ -49,12 +49,11 @@
         "from": "der Blume",
         "to": "of the flower"
       }
-    ],
-     "activity5": {
+    ]
+  },
+  "activity5": {
     "title": "Genitive Challenge: Match the noun with its correct case!",
     "message": "🎉 Quiz Completed!",
     "submessage": "You mastered the Genitive case!"
   }
 }
-
- 
