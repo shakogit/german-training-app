@@ -24,5 +24,20 @@
       { "text": "Das Buch des Lehrers", "isCorrect": true }
     ],
     "explanation": "📚 Perfect! 'Der Lehrer' becomes 'des Lehrers'."
-  }
+  },
+  "activity3": [
+    {
+      "english": "The book of the teacher",
+      "german": "Das Buch des Lehrers"
+    },
+    {
+      "english": "The car of the father",
+      "german": "Das Auto des Vaters"
+    },
+    {
+      "english": "The color of the flower",
+      "german": "Die Farbe der Blume"
+    }
+  ]
+}
 }
