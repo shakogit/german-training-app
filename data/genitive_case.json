@@ -19,24 +19,33 @@
   },
   "activity3": [
     {
-      "english": "The book of the teacher",
-      "german": "Das Buch des Lehrers",
+      "prompt": "The book of the teacher",
+      "correct": "Das Buch des Lehrers",
       "wrong": ["Das Buch dem Lehrer", "Das Buch der Lehrer"]
     },
     {
-      "english": "The car of the father",
-      "german": "Das Auto des Vaters",
+      "prompt": "The car of the father",
+      "correct": "Das Auto des Vaters",
       "wrong": ["Das Auto den Vater", "Das Auto dem Vater"]
     },
     {
-      "english": "The color of the flower",
-      "german": "Die Farbe der Blume",
+      "prompt": "The color of the flower",
+      "correct": "Die Farbe der Blume",
       "wrong": ["Die Farbe die Blume", "Die Farbe den Blume"]
     }
   ],
-  "activity4": {
-    "title": "Genitive Challenge: Match the noun with its correct case!",
-    "message": "🎉 Quiz Completed!",
-    "submessage": "You mastered the Genitive case!"
-  }
+  "activity4": [
+    {
+      "from": "des Vaters",
+      "to": "of the father"
+    },
+    {
+      "from": "des Lehrers",
+      "to": "of the teacher"
+    },
+    {
+      "from": "der Blume",
+      "to": "of the flower"
+    }
+  ]
 }
