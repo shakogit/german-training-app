@@ -21,6 +21,7 @@
     "title": "Genitive Case (Genitiv)",
     "level": "A2",
     "icon": "🔑",
+    "description": "Learn ownership structure with des/der",
     "file": "data/genitive_case.json"
   }
 ]
