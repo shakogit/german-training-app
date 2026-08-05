@@ -30,5 +30,10 @@
       "english": "The color of the flower",
       "german": "Die Farbe der Blume"
     }
-  ]
+  ],
+  "activity4": {
+    "title": "Genitive Challenge: Match the noun with its correct case!",
+    "message": "🎉 Quiz Completed!",
+    "submessage": "You mastered the Genitive case!"
+  }
 }
