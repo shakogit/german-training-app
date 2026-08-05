@@ -1,0 +1,46 @@
+{
+  "topic_id": "genitive_case",
+  "title": "Genitive Case (Genitiv)",
+  "level": "A2",
+  "icon": "🔑",
+  "questions": [
+    {
+      "id": "gen_q1",
+      "type": "multiple_choice",
+      "question": "Combine: Das Auto + Der Vater",
+      "options": [
+        "Das Auto der Vater",
+        "Das Auto des Vaters",
+        "Das Auto den Vater"
+      ],
+      "correct": 1,
+      "feedback": "🗝️ Correct! Masculine words change 'der' to 'des' and add '-s/-es' to the noun.",
+      "hint": "Masculine in Genitive: der -> des + -es"
+    },
+    {
+      "id": "gen_q2",
+      "type": "multiple_choice",
+      "question": "Combine: Die Farbe + Die Blume",
+      "options": [
+        "Die Farbe der Blume",
+        "Die Farbe des Blume",
+        "Die Farbe der Blumenes"
+      ],
+      "correct": 0,
+      "feedback": "🌸 Correct! Feminine words change 'die' to 'der'. No ending added to the noun!",
+      "hint": "Feminine in Genitive: die -> der (no -es ending needed!)"
+    },
+    {
+      "id": "gen_q3",
+      "type": "multiple_choice",
+      "question": "Combine: Das Buch + Der Lehrer",
+      "options": [
+        "Das Buch dem Lehrer",
+        "Das Buch des Lehrers"
+      ],
+      "correct": 1,
+      "feedback": "📚 Perfect! 'Der Lehrer' becomes 'des Lehrers'.",
+      "hint": "Masculine in Genitive: der -> des + -s"
+    }
+  ]
+}
