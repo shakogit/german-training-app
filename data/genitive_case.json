@@ -16,8 +16,6 @@
       { "id": "zone1", "correct": "der" }
     ],
     "dragWords": ["der", "des", "den", "dem"]
-   
-    "explanation": "🌸 Correct! Feminine words change 'die' to 'der'. No ending added to the noun!"
   },
   "activity3": {
     "question": "Combine: Das Buch + Der Lehrer",
