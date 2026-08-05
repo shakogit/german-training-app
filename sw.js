@@ -1,4 +1,4 @@
-const CACHE_NAME = 'deutsch-app-v25';
+const CACHE_NAME = 'deutsch-app-v26';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
