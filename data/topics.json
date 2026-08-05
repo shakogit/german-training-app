@@ -15,5 +15,12 @@
     "icon": "✂️",
     "description": "Master separable verbs in German.",
     "file": "data/trennbare_verben.json"
+  },
+  {
+    "id": "genitive_case",
+    "title": "Genitive Case (Genitiv)",
+    "level": "A2",
+    "icon": "🔑",
+    "file": "data/genitive_case.json"
   }
 ]
