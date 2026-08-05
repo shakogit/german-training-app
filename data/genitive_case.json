@@ -34,18 +34,21 @@
       "wrong": ["Die Farbe die Blume", "Die Farbe den Blume"]
     }
   ],
-  "activity4": [
-    {
-      "from": "des Vaters",
-      "to": "of the father"
-    },
-    {
-      "from": "des Lehrers",
-      "to": "of the teacher"
-    },
-    {
-      "from": "der Blume",
-      "to": "of the flower"
-    }
-  ]
+  "activity4": {
+    "title": "Genitive Challenge: Match the noun with its correct translation!",
+    "cards": [
+      {
+        "from": "des Vaters",
+        "to": "of the father"
+      },
+      {
+        "from": "des Lehrers",
+        "to": "of the teacher"
+      },
+      {
+        "from": "der Blume",
+        "to": "of the flower"
+      }
+    ]
+  }
 }
