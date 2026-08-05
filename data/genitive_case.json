@@ -11,11 +11,11 @@
     "explanation": "🗝️ Correct! Masculine words change 'der' to 'des' and add '-s/-es' to the noun (der Vater -> des Vaters)."
   },
   "activity2": {
-    "question": "Combine: Die Farbe + Die Blume",
-    "options": [
-      { "text": "Die Farbe der Blume", "isCorrect": true },
-      { "text": "Die Farbe des Blume", "isCorrect": false },
-      { "text": "Die Farbe der Blumenes", "isCorrect": false }
+    "sentenceParts": ["Die Farbe ", " Blume ist rot."],
+    "dropZones": [
+      { "id": "zone1", "correct": "der" }
+    ],
+    "dragWords": ["der", "des", "den", "dem"]
     ],
     "explanation": "🌸 Correct! Feminine words change 'die' to 'der'. No ending added to the noun!"
   },
