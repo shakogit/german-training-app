@@ -17,26 +17,21 @@
     ],
     "dragWords": ["der", "des", "den", "dem"]
   },
-  "activity3": {
-    "question": "Combine: Das Buch + Der Lehrer",
-    "options": [
-      { "text": "Das Buch dem Lehrer", "isCorrect": false },
-      { "text": "Das Buch des Lehrers", "isCorrect": true }
-    ],
-    "explanation": "📚 Perfect! 'Der Lehrer' becomes 'des Lehrers'."
-  },
   "activity3": [
     {
       "english": "The book of the teacher",
-      "german": "Das Buch des Lehrers"
+      "german": "Das Buch des Lehrers",
+      "wrong": ["Das Buch dem Lehrer", "Das Buch der Lehrer"]
     },
     {
       "english": "The car of the father",
-      "german": "Das Auto des Vaters"
+      "german": "Das Auto des Vaters",
+      "wrong": ["Das Auto den Vater", "Das Auto dem Vater"]
     },
     {
       "english": "The color of the flower",
-      "german": "Die Farbe der Blume"
+      "german": "Die Farbe der Blume",
+      "wrong": ["Die Farbe die Blume", "Die Farbe den Blume"]
     }
   ],
   "activity4": {
@@ -45,5 +40,3 @@
     "submessage": "You mastered the Genitive case!"
   }
 }
-
-
