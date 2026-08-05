@@ -15,7 +15,7 @@
     "dropZones": [
       { "id": "zone1", "correct": "der" }
     ],
-    "dragWords": ["der", "des", "den", "dem"],
+    "dragWords": ["der", "des", "den", "dem"]
   },
   "activity3": {
     "question": "Combine: Das Buch + Der Lehrer",
