@@ -19,41 +19,39 @@
   },
   "activity3": [
     {
-      "prompt": "The book of the teacher",
-      "correct": "Das Buch des Lehrers",
+      "en": "The book of the teacher",
+      "de": "Das Buch des Lehrers",
       "wrong": ["Das Buch dem Lehrer", "Das Buch der Lehrer"]
     },
     {
-      "prompt": "The car of the father",
-      "correct": "Das Auto des Vaters",
+      "en": "The car of the father",
+      "de": "Das Auto des Vaters",
       "wrong": ["Das Auto den Vater", "Das Auto dem Vater"]
     },
     {
-      "prompt": "The color of the flower",
-      "correct": "Die Farbe der Blume",
+      "en": "The color of the flower",
+      "de": "Die Farbe der Blume",
       "wrong": ["Die Farbe die Blume", "Die Farbe den Blume"]
     }
   ],
-  "activity4": {
-    "title": "Genitive Challenge: Match the noun with its correct translation!",
-    "pairs": [
-      {
-        "from": "des Vaters",
-        "to": "of the father"
-      },
-      {
-        "from": "des Lehrers",
-        "to": "of the teacher"
-      },
-      {
-        "from": "der Blume",
-        "to": "of the flower"
-      }
-    ]
-  },
-  "activity5": {
-    "title": "Genitive Challenge: Match the noun with its correct case!",
-    "message": "🎉 Quiz Completed!",
-    "submessage": "You mastered the Genitive case!"
-  }
+  "activity4": [
+    {
+      "from": "GENITIVE FORM",
+      "word": "des Vaters",
+      "right": "of the father",
+      "options": ["of the father", "of the mother", "to the father", "the father"]
+    },
+    {
+      "from": "GENITIVE FORM",
+      "word": "des Lehrers",
+      "right": "of the teacher",
+      "options": ["for the teacher", "of the teacher", "by the teacher", "the teacher"]
+    },
+    {
+      "from": "GENITIVE FORM",
+      "word": "der Blume",
+      "right": "of the flower",
+      "options": ["of the flower", "in the flower", "with the flower", "the flower"]
+    }
+  ]
 }
