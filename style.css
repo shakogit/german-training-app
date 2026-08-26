@@ -1,143 +1,134 @@
-/* ==========================================
-   1. Reset & General Styles
-   ========================================== */
+:root {
+    --bg-color: #2c2c2c;
+    --card-bg: #383838;
+    --accent-purple: #a855f7;
+    --pastel-orange: #f97316;
+    --text-white: #ffffff;
+    --text-gray: #b3b3b3;
+    --correct-green: #22c55e;
+    --incorrect-red: #ef4444;
+}
+
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f7f6;
-  color: #333;
-  line-height: 1.6;
+    background-color: var(--bg-color);
+    color: var(--text-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 15px;
 }
 
-/* ==========================================
-   2. Header & Layout
-   ========================================== */
-.app-header {
-  background: linear-gradient(135deg, #4A90E2, #50E3C2);
-  color: white;
-  padding: 2rem 1rem;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+/* Base Card Container */
+.hub-container, .quiz-container {
+    width: 100%;
+    max-width: 450px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.app-header h1 {
-  font-size: 2.2rem;
-  margin-bottom: 0.3rem;
+/* Header & Logo */
+.header {
+    margin-bottom: 25px;
 }
 
-.main-container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+.logo-placeholder {
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    color: var(--text-white);
+    border-bottom: 2px solid var(--accent-purple);
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
 }
 
-.welcome-section {
-  text-align: center;
-  margin-bottom: 2rem;
+.sub-description {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    line-height: 1.4;
+    margin-top: 5px;
 }
 
-.welcome-section h2 {
-  color: #2c3e50;
-  font-size: 1.8rem;
+.hero-title {
+    font-size: 1.2rem;
+    margin: 20px 0 15px 0;
+    font-weight: 600;
 }
 
-.welcome-section p {
-  color: #666;
+/* Module Cards */
+.modules-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-/* ==========================================
-   3. Dynamic Topics Grid & Cards
-   ========================================== */
-.topics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+.module-card {
+    background: #4a4a4a;
+    border-radius: 15px;
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text-white);
+    display: block;
+    transition: transform 0.2s, background 0.2s;
+    border: 2px solid transparent;
 }
 
-.topic-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid #eef2f5;
+.module-card:active {
+    transform: scale(0.98);
 }
 
-.topic-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+.module-card.active-module {
+    border-color: var(--pastel-orange);
+    background: #444;
 }
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+.module-card.active-module:hover {
+    background: #4e4e4e;
 }
 
-.topic-icon {
-  font-size: 2rem;
+.module-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--pastel-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 5px;
 }
 
-.topic-level {
-  background-color: #e3f2fd;
-  color: #1976d2;
-  font-size: 0.85rem;
-  font-weight: bold;
-  padding: 0.3rem 0.6rem;
-  border-radius: 20px;
+.module-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-gray);
 }
 
-.topic-title {
-  font-size: 1.3rem;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
+.module-card.disabled-module {
+    border: 2px dashed #555;
+    background: rgba(0, 0, 0, 0.15);
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
-.topic-description {
-  color: #666;
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
-}
-
-.start-btn {
-  background-color: #4A90E2;
-  color: white;
-  border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-  width: 100%;
-  text-align: center;
-}
-
-.topic-card:hover .start-btn {
-  background-color: #357abd;
-}
-
-/* ==========================================
-   4. Loading & Error States
-   ========================================== */
-.loading-spinner, .error-msg {
-  text-align: center;
-  grid-column: 1 / -1;
-  padding: 2rem;
-  font-size: 1.1rem;
-  color: #666;
-}
-
-.error-msg {
-  color: #d9534f;
+.stealth-footer {
+    margin-top: 25px;
+    font-size: 0.75rem;
+    color: #777;
+    letter-spacing: 1px;
+    font-style: italic;
 }
