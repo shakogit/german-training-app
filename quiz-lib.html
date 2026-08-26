@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS6B48F50R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-ZS6B48F50R');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual German - Quiz Library</title>
+    <!-- Central CSS File -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hub-container">
+    <div style="text-align: left;">
+        <a href="index.html" class="back-link">← Back to Hub</a>
+    </div>
+
+    <div class="header" style="text-align: center;">
+        <div class="logo-placeholder">QUIZ LIBRARY</div>
+        <p class="sub-description">Select a topic to start interactive training</p>
+    </div>
+
+    <!-- Topics dynamically loaded from data/topics.json -->
+    <div class="topics-grid" id="topicsContainer">
+        <p style="color: var(--text-gray);">Loading topics...</p>
+    </div>
+
+    <div class="stealth-footer">Visual German Companion App</div>
+</div>
+
+<script>
+    fetch('./data/topics.json')
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load topics");
+            return response.json();
+        })
+        .then(topics => {
+            const container = document.getElementById('topicsContainer');
+            container.innerHTML = "";
+
+            topics.forEach(topic => {
+                const card = document.createElement('a');
+                card.className = 'topic-card';
+                card.href = `quiz.html?topic=${topic.id}`;
+
+                card.innerHTML = `
+                    <div class="topic-info">
+                        <h3>${topic.title}</h3>
+                        <p>${topic.description || 'Practice German interactively'}</p>
+                    </div>
+                    <div class="start-btn-badge">Start ➔</div>
+                `;
+                container.appendChild(card);
+            });
+        })
+        .catch(err => {
+            console.error("Error loading library:", err);
+            document.getElementById('topicsContainer').innerHTML = "<p style='color:var(--incorrect-red);'>Failed to load library topics.</p>";
+        });
+</script>
+
+</body>
+</html>
