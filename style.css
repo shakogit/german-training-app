@@ -1,12 +1,11 @@
 :root {
     --bg-color: #2c2c2c;
     --card-bg: #383838;
+    --inner-card-bg: #2d2d2d;
     --accent-purple: #a855f7;
     --pastel-orange: #f97316;
     --text-white: #ffffff;
-    --text-gray: #b3b3b3;
-    --correct-green: #22c55e;
-    --incorrect-red: #ef4444;
+    --text-gray: #a0a0a0;
 }
 
 * {
@@ -28,107 +27,115 @@ body {
     padding: 15px;
 }
 
-/* Base Card Container */
-.hub-container, .quiz-container {
+.hub-container {
     width: 100%;
-    max-width: 450px;
+    max-width: 380px;
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border-radius: 24px;
+    padding: 30px 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
     text-align: center;
-    position: relative;
-    overflow: hidden;
 }
 
-/* Header & Logo */
+/* Header & Typo matching PDF Page A */
 .header {
+    text-align: left;
     margin-bottom: 25px;
 }
 
-.logo-placeholder {
+.brand-sub {
+    font-size: 0.9rem;
     font-weight: 800;
-    font-size: 1.5rem;
     letter-spacing: 2px;
     color: var(--text-white);
-    border-bottom: 2px solid var(--accent-purple);
-    display: inline-block;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
 }
 
-.sub-description {
-    font-size: 0.9rem;
+.brand-desc {
+    font-size: 0.75rem;
     color: var(--text-gray);
-    line-height: 1.4;
-    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 .hero-title {
-    font-size: 1.2rem;
-    margin: 20px 0 15px 0;
-    font-weight: 600;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-gray);
+    line-height: 1.2;
+    margin: 15px 0;
 }
 
-/* Module Cards */
-.modules-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.module-card {
-    background: #4a4a4a;
-    border-radius: 15px;
-    padding: 20px;
-    text-decoration: none;
+.hero-title .highlight {
+    font-size: 1.6rem;
+    font-weight: 900;
     color: var(--text-white);
-    display: block;
-    transition: transform 0.2s, background 0.2s;
-    border: 2px solid transparent;
+    letter-spacing: 1px;
 }
 
-.module-card:active {
-    transform: scale(0.98);
-}
-
-.module-card.active-module {
-    border-color: var(--pastel-orange);
-    background: #444;
-}
-
-.module-card.active-module:hover {
-    background: #4e4e4e;
-}
-
-.module-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--pastel-orange);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 5px;
-}
-
-.module-subtitle {
+.hero-title small {
     font-size: 0.85rem;
     color: var(--text-gray);
 }
 
-.module-card.disabled-module {
+/* Modules Grid */
+.modules-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+/* Active Card */
+.module-card.active-module {
+    background: var(--inner-card-bg);
+    border-radius: 20px;
+    padding: 25px 20px;
+    text-decoration: none;
+    display: block;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 4px 10px rgba(0,0,0,0.2);
+    border: 1px solid #444;
+    transition: transform 0.2s ease;
+}
+
+.module-card.active-module:active {
+    transform: scale(0.97);
+}
+
+.module-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--pastel-orange);
+    margin-bottom: 6px;
+}
+
+.module-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
+/* Future Module (Dashed Box) */
+.future-module {
     border: 2px dashed #555;
-    background: rgba(0, 0, 0, 0.15);
-    opacity: 0.6;
-    cursor: not-allowed;
+    border-radius: 20px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.future-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-gray);
+    margin-bottom: 4px;
+}
+
+.future-subtitle {
+    font-size: 0.75rem;
+    color: #777;
+    line-height: 1.3;
 }
 
 .stealth-footer {
-    margin-top: 25px;
-    font-size: 0.75rem;
-    color: #777;
+    font-size: 0.7rem;
+    color: #666;
     letter-spacing: 1px;
     font-style: italic;
 }
