@@ -139,3 +139,58 @@ body {
     letter-spacing: 1px;
     font-style: italic;
 }
+/* Library Specific Layout */
+.topics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.topic-card {
+    background: #4a4a4a;
+    border-radius: 15px;
+    padding: 18px;
+    text-decoration: none;
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s, background 0.2s;
+    border: 1px solid #555;
+    text-align: left;
+}
+
+.topic-card:active {
+    transform: scale(0.98);
+}
+
+.topic-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    color: var(--text-white);
+}
+
+.topic-info p {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.start-btn-badge {
+    background: var(--pastel-orange);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: var(--accent-purple);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
