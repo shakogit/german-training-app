@@ -1,54 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS6B48F50R"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS6B48F50R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-    gtag('config', 'G-ZS6B48F50R');
-  </script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visual German - Interactive Practice</title>
-  <link rel="stylesheet" href="./style.css">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4A90E2">
+      gtag('config', 'G-ZS6B48F50R');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual German - Hub</title>
+    <!-- External Central CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header class="app-header">
-    <div class="header-container">
-      <h1>🇩🇪 Visual German</h1>
-      <p>Master German grammar interactively</p>
+<div class="hub-container">
+    <!-- Header Zone (Module A Concept) -->
+    <div class="header">
+        <div class="logo-placeholder">VISUAL GERMAN</div>
+        <p class="sub-description">Master German interactively through rapid practice sessions.</p>
     </div>
-  </header>
 
-  <main class="main-container">
-    <section class="welcome-section">
-      <h2>Select a Topic</h2>
-      <p>Choose a topic below to start practicing:</p>
-    </section>
+    <!-- Main Module Selector -->
+    <h2 class="hero-title">Choose Training Module</h2>
 
-    <!-- Dynamic Topic Cards Container -->
-    <div id="topics-grid" class="topics-grid">
-      <div class="loading-spinner">Loading topics...</div>
+    <div class="modules-grid">
+        <!-- Module 1: Links to quiz-lib.html -->
+        <a href="quiz-lib.html" class="module-card active-module">
+            <div class="module-title">Quiz ➔</div>
+            <div class="module-subtitle">Quiz Related Studies</div>
+        </a>
+
+        <!-- Module 2: Future Expansion Zone -->
+        <div class="module-card disabled-module">
+            <div class="module-title" style="color: var(--text-gray);">Guess the Article</div>
+            <div class="module-subtitle">Next item for future training-type card zone</div>
+        </div>
     </div>
-  </main>
 
-  <script src="app.js"></script>
-  <script>
-    // Register Service Worker for PWA support
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('SW Registered:', reg.scope))
-          .catch(err => console.error('SW Error:', err));
-      });
-    }
-  </script>
+    <div class="stealth-footer">Visual German Companion App</div>
+</div>
+
 </body>
 </html>
