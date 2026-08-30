@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS6B48F50R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-ZS6B48F50R');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c2c2c">
+    <title>Guess the Article - Tug of War</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .game-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .timer-badge {
+            background: #222;
+            border: 1px solid var(--pastel-orange);
+            color: var(--pastel-orange);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Star Shelves (12 slots each) */
+        .shelf-title {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+
+        .star-shelf {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            background: rgba(0,0,0,0.25);
+            padding: 10px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #444;
+        }
+
+        .star-slot {
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: #2a2a2a;
+            border: 1px dashed #444;
+            transition: all 0.3s ease;
+        }
+
+        .star-slot.filled.user {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid #3b82f6;
+            color: #60a5fa;
+            text-shadow: 0 0 8px #3b82f6;
+        }
+
+        .star-slot.filled.opponent {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #f87171;
+            text-shadow: 0 0 8px #ef4444;
+        }
+
+        /* HTML Form & Word Display Zone */
+        .word-card {
+            background: #2a2a2a;
+            border-radius: 16px;
+            padding: 20px 15px;
+            margin: 15px 0;
+            border: 2px solid var(--pastel-orange);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .target-word {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .article-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-article {
+            flex: 1;
+            padding: 14px 0;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.1s, filter 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn-article:active { transform: scale(0.95); }
+
+        .btn-der { background: #2563eb; } /* Blue */
+        .btn-die { background: #dc2626; } /* Red */
+        .btn-das { background: #16a34a; } /* Green */
+
+        /* Feedback overlay */
+        .game-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            border-radius: 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container" style="position: relative;">
+    <!-- Overlay for Win/Lose -->
+    <div class="game-overlay" id="gameOverOverlay">
+        <h1 id="overlayTitle" style="color: var(--pastel-orange); margin-bottom: 10px;">Game Over</h1>
+        <p id="overlayMessage" style="color: var(--text-white); margin-bottom: 20px;"></p>
+        <button onclick="location.reload()" class="start-btn-badge" style="padding: 12px 24px; font-size: 1rem; cursor: pointer;">Play Again 🔄</button>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <a href="guess-lib.html" class="back-link" style="margin: 0;">← Back</a>
+        <div class="timer-badge" id="timerDisplay">T.Time 04:00</div>
+    </div>
+
+    <!-- User Shelf -->
+    <div class="shelf-title">
+        <span>USER SHELF</span>
+        <span id="userScoreText">12 / 24</span>
+    </div>
+    <div class="star-shelf" id="userShelf"></div>
+
+    <!-- Gameplay HTML-Form Zone -->
+    <div class="word-card">
+        <div class="target-word" id="currentWord">Loading...</div>
+        <div class="article-buttons">
+            <button class="btn-article btn-der" onclick="checkAnswer('der')">der</button>
+            <button class="btn-article btn-die" onclick="checkAnswer('die')">die</button>
+            <button class="btn-article btn-das" onclick="checkAnswer('das')">das</button>
+        </div>
+    </div>
+
+    <!-- Opponent Shelf -->
+    <div class="shelf-title">
+        <span>OPPONENT SHELF</span>
+        <span id="opponentScoreText">12 / 24</span>
+    </div>
+    <div class="star-shelf" id="opponentShelf"></div>
+
+    <div class="stealth-footer">Tug-of-War • Visual German</div>
+</div>
+
+<script>
+    // Game State Variables
+    let userStars = 12;
+    let opponentStars = 12;
+    let timerSeconds = 240; // 4 Minutes
+    let timerInterval = null;
+    let currentWordObj = null;
+    let userStreak = 0;
+
+    // Word Bank
+    const wordBank = [
+        { word: "Mutter", article: "die", difficulty: "easy" },
+        { word: "Vater", article: "der", difficulty: "easy" },
+        { word: "Haus", article: "das", difficulty: "easy" },
+        { word: "Mädchen", article: "das", difficulty: "hard" },
+        { word: "Tisch", article: "der", difficulty: "easy" },
+        { word: "Auto", article: "das", difficulty: "easy" },
+        { word: "Achtung", article: "die", difficulty: "hard" },
+        { word: "Preis", article: "der", difficulty: "hard" },
+        { word: "Schule", article: "die", difficulty: "easy" },
+        { word: "Buch", article: "das", difficulty: "easy" },
+        { word: "Freund", article: "der", difficulty: "easy" },
+        { word: "Zeitung", article: "die", difficulty: "hard" }
+    ];
+
+    function initGame() {
+        renderShelves();
+        startTimer();
+        nextWord();
+    }
+
+    function renderShelves() {
+        const userShelfEl = document.getElementById('userShelf');
+        const opponentShelfEl = document.getElementById('opponentShelf');
+        userShelfEl.innerHTML = '';
+        opponentShelfEl.innerHTML = '';
+
+        // Render User Slots (Max 24)
+        for(let i=0; i<24; i++) {
+            const slot = document.createElement('div');
+            slot.className = `star-slot ${i < userStars ? 'filled user' : ''}`;
+            slot.innerText = i < userStars ? '★' : '';
+            userShelfEl.appendChild(slot);
+        }
+
+        // Render Opponent Slots (Max 24)
+        for(let i=0; i<24; i++) {
+            const slot = document.createElement('div');
+            slot.className = `star-slot ${i < opponentStars ? 'filled opponent' : ''}`;
+            slot.innerText = i < opponentStars ? '★' : '';
+            opponentShelfEl.appendChild(slot);
+        }
+
+        document.getElementById('userScoreText').innerText = `${userStars} / 24`;
+        document.getElementById('opponentScoreText').innerText = `${opponentStars} / 24`;
+
+        // Check Win/Lose
+        if(userStars >= 24 || opponentStars <= 0) endGame(true, "Knockout! You won all stars! 🎉");
+        if(opponentStars >= 24 || userStars <= 0) endGame(false, "You lost all your stars! ❌");
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timerSeconds--;
+            let mins = Math.floor(timerSeconds / 60);
+            let secs = timerSeconds % 60;
+            document.getElementById('timerDisplay').innerText = `T.Time ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            if(timerSeconds <= 0) {
+                clearInterval(timerInterval);
+                if(userStars > opponentStars) endGame(true, "Time's up! You won on points! 🏆");
+                else endGame(false, "Time's up! Opponent won! 😞");
+            }
+        }, 1000);
+    }
+
+    // Bang! Bang! Dynamic Algorithm
+    function nextWord() {
+        let pool = wordBank;
+        if(userStreak >= 2) {
+            // High streak -> Push harder words
+            const hardPool = wordBank.filter(w => w.difficulty === 'hard');
+            if(hardPool.length > 0) pool = hardPool;
+        }
+        
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        currentWordObj = pool[randomIndex];
+        document.getElementById('currentWord').innerText = currentWordObj.word;
+    }
+
+    function checkAnswer(selectedArticle) {
+        if(selectedArticle === currentWordObj.article) {
+            // Right answer: User +1, Opponent -1
+            userStars++;
+            opponentStars--;
+            userStreak++;
+        } else {
+            // Wrong answer: User -1, Opponent +1
+            userStars--;
+            opponentStars++;
+            userStreak = 0;
+        }
+        renderShelves();
+        nextWord();
+    }
+
+    function endGame(isWin, message) {
+        clearInterval(timerInterval);
+        const overlay = document.getElementById('gameOverOverlay');
+        document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
+        document.getElementById('overlayMessage').innerText = message;
+        overlay.style.display = 'flex';
+    }
+
+    window.onload = initGame;
+</script>
+</body>
+</html>
