@@ -1,4 +1,4 @@
-const CACHE_NAME = 'visual-german-v50'; // ვერსია გავზარდეთ v2-ზე
+const CACHE_NAME = 'visual-german-v51'; // ვერსია გავზარდეთ v2-ზე
 
 // ყველა ფაილის სია, რომელიც უნდა დაკეშირდეს ოფლაინ მუშაობისთვის
 const CACHE_URLS = [
@@ -40,14 +40,21 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// 3. Fetch Event - ოფლაინ რეჟიმის მხარდაჭერა
+// sw.js-ის ბოლო ნაწილი ჩაანაცვლე ამით:
 self.addEventListener('fetch', (event) => {
+  // იგნორირება გავუკეთოთ Google Analytics-ის მოთხოვნებს, თუ ჩაბლოკილია
+  if (event.request.url.includes('google-analytics') || event.request.url.includes('googletagmanager')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
       return fetch(event.request);
+    }).catch(err => {
+      console.log('[SW] Fetch bypassed/failed for:', event.request.url);
     })
   );
 });
