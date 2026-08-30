@@ -1,58 +1,53 @@
-const CACHE_NAME = 'deutsch-app-v47';
-const ASSETS_TO_CACHE = [
+const CACHE_NAME = 'visual-german-v48'; // ვერსია გავზარდეთ v2-ზე
+
+// ყველა ფაილის სია, რომელიც უნდა დაკეშირდეს ოფლაინ მუშაობისთვის
+const CACHE_URLS = [
   './',
   './index.html',
   './quiz-lib.html',
-  './guess-lib.html',
   './quiz.html',
-  './app.js',
+  './guess-lib.html',
+  './guess-article.html',
   './style.css',
-  './manifest.json'
+  './data/topics.json'
 ];
 
-// 1. ინსტალაციისა და ძველი SW-ის მყისიერი ჩანაცვლების ეტაპი
+// 1. Install Event - ფაილების ქეშში ჩაწერა
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // აიძულებს ახალ SW-ს, არ დაელოდოს აპლიკაციის დახურვას
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
+      console.log('[Service Worker] Caching app shell & dynamic pages');
+      return cache.addAll(CACHE_URLS);
     })
   );
+  self.skipWaiting();
 });
 
-// 2. აქტივაცია და ძველი ქეშების სრული განადგურება (მორიარტის კვალის წაშლა)
+// 2. Activate Event - ძველი ქეშის წაშლა განახლებისას
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
-            console.log('Clearing old cache:', cache);
+            console.log('[Service Worker] Clearing old cache:', cache);
             return caches.delete(cache);
           }
         })
       );
-    }).then(() => self.clients.claim()) // მყისიერად იღებს კონტროლს ყველა გახსნილ გვერდზე
+    })
   );
+  self.clients.claim();
 });
 
-// 3. Network First (ან Stale-While-Revalidate) სტრატეგია HTML/JS/CSS-ისთვის
+// 3. Fetch Event - ოფლაინ რეჟიმის მხარდაჭერა
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        // თუ ინტერნეტი არის, იწერს ახალს და ანახლებს ქეშსაც
-        if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      })
-      .catch(() => {
-        // თუ ინტერნეტი არ არის (Offline), მხოლოდ მაშინ კითხულობს ქეშიდან
-        return caches.match(event.request);
-      })
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(event.request);
+    })
   );
 });
