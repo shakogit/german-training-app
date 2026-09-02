@@ -192,119 +192,116 @@
 
 <script>
     // Game State Variables
-    let userStars = 12;
-    let opponentStars = 12;
-    let timerSeconds = 240; // 4 Minutes
-    let timerInterval = null;
-    let currentWordObj = null;
-    let userStreak = 0;
+let userStars = 12;
+let opponentStars = 12;
+let timerSeconds = 240; // 4 Minutes
+let timerInterval = null;
+let currentWordObj = null;
+let userStreak = 0;
+let wordBank = []; // Dynamically loaded from JSON
 
-    // Word Bank
-    const wordBank = [
-        { word: "Mutter", article: "die", difficulty: "easy" },
-        { word: "Vater", article: "der", difficulty: "easy" },
-        { word: "Haus", article: "das", difficulty: "easy" },
-        { word: "Mädchen", article: "das", difficulty: "hard" },
-        { word: "Tisch", article: "der", difficulty: "easy" },
-        { word: "Auto", article: "das", difficulty: "easy" },
-        { word: "Achtung", article: "die", difficulty: "hard" },
-        { word: "Preis", article: "der", difficulty: "hard" },
-        { word: "Schule", article: "die", difficulty: "easy" },
-        { word: "Buch", article: "das", difficulty: "easy" },
-        { word: "Freund", article: "der", difficulty: "easy" },
-        { word: "Zeitung", article: "die", difficulty: "hard" }
-    ];
+function initGame() {
+    renderShelves();
+    
+    // Load words dynamically from JSON
+    fetch('./data/articles.json')
+        .then(res => {
+            if(!res.ok) throw new Error("Could not load articles.json");
+            return res.json();
+        })
+        .then(data => {
+            wordBank = data;
+            startTimer();
+            nextWord();
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('currentWord').innerText = "Error loading words!";
+        });
+}
 
-    function initGame() {
-        renderShelves();
-        startTimer();
-        nextWord();
+function renderShelves() {
+    const userShelfEl = document.getElementById('userShelf');
+    const opponentShelfEl = document.getElementById('opponentShelf');
+    userShelfEl.innerHTML = '';
+    opponentShelfEl.innerHTML = '';
+
+    for(let i=0; i<24; i++) {
+        const slot = document.createElement('div');
+        slot.className = `star-slot ${i < userStars ? 'filled user' : ''}`;
+        slot.innerText = i < userStars ? '★' : '';
+        userShelfEl.appendChild(slot);
     }
 
-    function renderShelves() {
-        const userShelfEl = document.getElementById('userShelf');
-        const opponentShelfEl = document.getElementById('opponentShelf');
-        userShelfEl.innerHTML = '';
-        opponentShelfEl.innerHTML = '';
+    for(let i=0; i<24; i++) {
+        const slot = document.createElement('div');
+        slot.className = `star-slot ${i < opponentStars ? 'filled opponent' : ''}`;
+        slot.innerText = i < opponentStars ? '★' : '';
+        opponentShelfEl.appendChild(slot);
+    }
 
-        // Render User Slots (Max 24)
-        for(let i=0; i<24; i++) {
-            const slot = document.createElement('div');
-            slot.className = `star-slot ${i < userStars ? 'filled user' : ''}`;
-            slot.innerText = i < userStars ? '★' : '';
-            userShelfEl.appendChild(slot);
+    document.getElementById('userScoreText').innerText = `${userStars} / 24`;
+    document.getElementById('opponentScoreText').innerText = `${opponentStars} / 24`;
+
+    if(userStars >= 24 || opponentStars <= 0) endGame(true, "Knockout! You won all stars! 🎉");
+    if(opponentStars >= 24 || userStars <= 0) endGame(false, "You lost all your stars! ❌");
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timerSeconds--;
+        let mins = Math.floor(timerSeconds / 60);
+        let secs = timerSeconds % 60;
+        document.getElementById('timerDisplay').innerText = `T.Time ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+        if(timerSeconds <= 0) {
+            clearInterval(timerInterval);
+            if(userStars > opponentStars) endGame(true, "Time's up! You won on points! 🏆");
+            else endGame(false, "Time's up! Opponent won! 😞");
         }
+    }, 1000);
+}
 
-        // Render Opponent Slots (Max 24)
-        for(let i=0; i<24; i++) {
-            const slot = document.createElement('div');
-            slot.className = `star-slot ${i < opponentStars ? 'filled opponent' : ''}`;
-            slot.innerText = i < opponentStars ? '★' : '';
-            opponentShelfEl.appendChild(slot);
-        }
+// Bang! Bang! Dynamic Algorithm
+function nextWord() {
+    if(wordBank.length === 0) return;
 
-        document.getElementById('userScoreText').innerText = `${userStars} / 24`;
-        document.getElementById('opponentScoreText').innerText = `${opponentStars} / 24`;
-
-        // Check Win/Lose
-        if(userStars >= 24 || opponentStars <= 0) endGame(true, "Knockout! You won all stars! 🎉");
-        if(opponentStars >= 24 || userStars <= 0) endGame(false, "You lost all your stars! ❌");
+    let pool = wordBank;
+    if(userStreak >= 2) {
+        const hardPool = wordBank.filter(w => w.difficulty === 'hard');
+        if(hardPool.length > 0) pool = hardPool;
     }
+    
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    currentWordObj = pool[randomIndex];
+    document.getElementById('currentWord').innerText = currentWordObj.word;
+}
 
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timerSeconds--;
-            let mins = Math.floor(timerSeconds / 60);
-            let secs = timerSeconds % 60;
-            document.getElementById('timerDisplay').innerText = `T.Time ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+function checkAnswer(selectedArticle) {
+    if(!currentWordObj) return;
 
-            if(timerSeconds <= 0) {
-                clearInterval(timerInterval);
-                if(userStars > opponentStars) endGame(true, "Time's up! You won on points! 🏆");
-                else endGame(false, "Time's up! Opponent won! 😞");
-            }
-        }, 1000);
+    if(selectedArticle === currentWordObj.article) {
+        userStars++;
+        opponentStars--;
+        userStreak++;
+    } else {
+        userStars--;
+        opponentStars++;
+        userStreak = 0;
     }
+    renderShelves();
+    nextWord();
+}
 
-    // Bang! Bang! Dynamic Algorithm
-    function nextWord() {
-        let pool = wordBank;
-        if(userStreak >= 2) {
-            // High streak -> Push harder words
-            const hardPool = wordBank.filter(w => w.difficulty === 'hard');
-            if(hardPool.length > 0) pool = hardPool;
-        }
-        
-        const randomIndex = Math.floor(Math.random() * pool.length);
-        currentWordObj = pool[randomIndex];
-        document.getElementById('currentWord').innerText = currentWordObj.word;
-    }
+function endGame(isWin, message) {
+    clearInterval(timerInterval);
+    const overlay = document.getElementById('gameOverOverlay');
+    document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
+    document.getElementById('overlayMessage').innerText = message;
+    overlay.style.display = 'flex';
+}
 
-    function checkAnswer(selectedArticle) {
-        if(selectedArticle === currentWordObj.article) {
-            // Right answer: User +1, Opponent -1
-            userStars++;
-            opponentStars--;
-            userStreak++;
-        } else {
-            // Wrong answer: User -1, Opponent +1
-            userStars--;
-            opponentStars++;
-            userStreak = 0;
-        }
-        renderShelves();
-        nextWord();
-    }
-
-    function endGame(isWin, message) {
-        clearInterval(timerInterval);
-        const overlay = document.getElementById('gameOverOverlay');
-        document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
-        document.getElementById('overlayMessage').innerText = message;
-        overlay.style.display = 'flex';
-    }
-
-    window.onload = initGame;
+window.onload = initGame;
 </script>
 </body>
 </html>
