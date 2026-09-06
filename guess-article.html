@@ -159,17 +159,23 @@
     </style>
 </head>
 <body>
+    
 
 <div class="game-container" style="position: relative;">
     <!-- Overlay for Win/Lose -->
-    <div class="game-overlay" id="gameOverOverlay">
-        <h1 id="overlayTitle" style="color: var(--pastel-orange); margin-bottom: 10px;">Game Over</h1>
-        <p id="overlayMessage" style="color: var(--text-white); margin-bottom: 10px; font-size: 1.1rem;"></p>
-        <p id="overlayScore" style="color: var(--text-gray); margin-bottom: 20px; font-weight: 600;"></p>
-        <div class="overlay-btns">
-            <button onclick="location.reload()" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer;">Play Again 🔄</button>
-            <a href="index.html" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer; background: #444; text-decoration: none;">Hub 🏠</a>
-        </div>
+   <!-- Overlay for Win/Lose -->
+<div class="game-overlay" id="gameOverOverlay">
+    <!-- აი აქ ჩასვი ეს ხაზი 👇 -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <h1 id="overlayTitle" style="color: var(--pastel-orange); margin-bottom: 10px;">Game Over</h1>
+    <p id="overlayMessage" style="color: var(--text-white); margin-bottom: 10px; font-size: 1.1rem;"></p>
+    <p id="overlayScore" style="color: var(--text-gray); margin-bottom: 20px; font-weight: 600;"></p>
+    <div class="overlay-btns">
+        <button onclick="location.reload()" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer;">Play Again 🔄</button>
+        <a href="index.html" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer; background: #444; text-decoration: none;">Hub 🏠</a>
+    </div>
+</div>
     </div>
 
     <!-- Top Bar -->
