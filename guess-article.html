@@ -43,7 +43,6 @@
             font-size: 0.9rem;
         }
 
-        /* Star Shelves (12 slots each) */
         .shelf-title {
             font-size: 0.75rem;
             color: var(--text-gray);
@@ -90,7 +89,6 @@
             text-shadow: 0 0 8px #ef4444;
         }
 
-        /* HTML Form & Word Display Zone */
         .word-card {
             background: #2a2a2a;
             border-radius: 16px;
@@ -105,7 +103,14 @@
             font-weight: 800;
             color: #ffffff;
             letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .word-translation {
+            font-size: 0.85rem;
+            color: var(--text-gray);
             margin-bottom: 15px;
+            font-style: italic;
         }
 
         .article-buttons {
@@ -129,21 +134,27 @@
 
         .btn-article:active { transform: scale(0.95); }
 
-        .btn-der { background: #2563eb; } /* Blue */
-        .btn-die { background: #dc2626; } /* Red */
-        .btn-das { background: #16a34a; } /* Green */
+        .btn-der { background: #2563eb; }
+        .btn-die { background: #dc2626; }
+        .btn-das { background: #16a34a; }
 
-        /* Feedback overlay */
         .game-overlay {
             display: none;
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             border-radius: 20px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 10;
+            padding: 20px;
+        }
+
+        .overlay-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -153,8 +164,12 @@
     <!-- Overlay for Win/Lose -->
     <div class="game-overlay" id="gameOverOverlay">
         <h1 id="overlayTitle" style="color: var(--pastel-orange); margin-bottom: 10px;">Game Over</h1>
-        <p id="overlayMessage" style="color: var(--text-white); margin-bottom: 20px;"></p>
-        <button onclick="location.reload()" class="start-btn-badge" style="padding: 12px 24px; font-size: 1rem; cursor: pointer;">Play Again 🔄</button>
+        <p id="overlayMessage" style="color: var(--text-white); margin-bottom: 10px; font-size: 1.1rem;"></p>
+        <p id="overlayScore" style="color: var(--text-gray); margin-bottom: 20px; font-weight: 600;"></p>
+        <div class="overlay-btns">
+            <button onclick="location.reload()" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer;">Play Again 🔄</button>
+            <a href="index.html" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer; background: #444; text-decoration: none;">Hub 🏠</a>
+        </div>
     </div>
 
     <!-- Top Bar -->
@@ -170,9 +185,10 @@
     </div>
     <div class="star-shelf" id="userShelf"></div>
 
-    <!-- Gameplay HTML-Form Zone -->
+    <!-- Gameplay Zone -->
     <div class="word-card">
         <div class="target-word" id="currentWord">Loading...</div>
+        <div class="word-translation" id="currentTranslation">...</div>
         <div class="article-buttons">
             <button class="btn-article btn-der" onclick="checkAnswer('der')">der</button>
             <button class="btn-article btn-die" onclick="checkAnswer('die')">die</button>
@@ -191,117 +207,125 @@
 </div>
 
 <script>
-    // Game State Variables
-let userStars = 12;
-let opponentStars = 12;
-let timerSeconds = 240; // 4 Minutes
-let timerInterval = null;
-let currentWordObj = null;
-let userStreak = 0;
-let wordBank = []; // Dynamically loaded from JSON
+    let userStars = 12;
+    let opponentStars = 12;
+    let timerSeconds = 240;
+    let timerInterval = null;
+    let currentWordObj = null;
+    let userStreak = 0;
+    let wordBank = [];
 
-function initGame() {
-    renderShelves();
-    
-    // Load words dynamically from JSON
-    fetch('./data/articles.json')
-        .then(res => {
-            if(!res.ok) throw new Error("Could not load articles.json");
-            return res.json();
-        })
-        .then(data => {
-            wordBank = data;
-            startTimer();
-            nextWord();
-        })
-        .catch(err => {
-            console.error(err);
-            document.getElementById('currentWord').innerText = "Error loading words!";
-        });
-}
-
-function renderShelves() {
-    const userShelfEl = document.getElementById('userShelf');
-    const opponentShelfEl = document.getElementById('opponentShelf');
-    userShelfEl.innerHTML = '';
-    opponentShelfEl.innerHTML = '';
-
-    for(let i=0; i<24; i++) {
-        const slot = document.createElement('div');
-        slot.className = `star-slot ${i < userStars ? 'filled user' : ''}`;
-        slot.innerText = i < userStars ? '★' : '';
-        userShelfEl.appendChild(slot);
-    }
-
-    for(let i=0; i<24; i++) {
-        const slot = document.createElement('div');
-        slot.className = `star-slot ${i < opponentStars ? 'filled opponent' : ''}`;
-        slot.innerText = i < opponentStars ? '★' : '';
-        opponentShelfEl.appendChild(slot);
-    }
-
-    document.getElementById('userScoreText').innerText = `${userStars} / 24`;
-    document.getElementById('opponentScoreText').innerText = `${opponentStars} / 24`;
-
-    if(userStars >= 24 || opponentStars <= 0) endGame(true, "Knockout! You won all stars! 🎉");
-    if(opponentStars >= 24 || userStars <= 0) endGame(false, "You lost all your stars! ❌");
-}
-
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timerSeconds--;
-        let mins = Math.floor(timerSeconds / 60);
-        let secs = timerSeconds % 60;
-        document.getElementById('timerDisplay').innerText = `T.Time ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-
-        if(timerSeconds <= 0) {
-            clearInterval(timerInterval);
-            if(userStars > opponentStars) endGame(true, "Time's up! You won on points! 🏆");
-            else endGame(false, "Time's up! Opponent won! 😞");
+    // Fisher-Yates Shuffle Algorithm for true randomness
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
-    }, 1000);
-}
-
-// Bang! Bang! Dynamic Algorithm
-function nextWord() {
-    if(wordBank.length === 0) return;
-
-    let pool = wordBank;
-    if(userStreak >= 2) {
-        const hardPool = wordBank.filter(w => w.difficulty === 'hard');
-        if(hardPool.length > 0) pool = hardPool;
     }
-    
-    const randomIndex = Math.floor(Math.random() * pool.length);
-    currentWordObj = pool[randomIndex];
-    document.getElementById('currentWord').innerText = currentWordObj.word;
-}
 
-function checkAnswer(selectedArticle) {
-    if(!currentWordObj) return;
-
-    if(selectedArticle === currentWordObj.article) {
-        userStars++;
-        opponentStars--;
-        userStreak++;
-    } else {
-        userStars--;
-        opponentStars++;
-        userStreak = 0;
+    function initGame() {
+        renderShelves();
+        
+        fetch('./data/articles.json')
+            .then(res => {
+                if(!res.ok) throw new Error("Could not load articles.json");
+                return res.json();
+            })
+            .then(data => {
+                wordBank = data;
+                shuffleArray(wordBank); // Shuffle on every start
+                startTimer();
+                nextWord();
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('currentWord').innerText = "Error loading words!";
+            });
     }
-    renderShelves();
-    nextWord();
-}
 
-function endGame(isWin, message) {
-    clearInterval(timerInterval);
-    const overlay = document.getElementById('gameOverOverlay');
-    document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
-    document.getElementById('overlayMessage').innerText = message;
-    overlay.style.display = 'flex';
-}
+    function renderShelves() {
+        const userShelfEl = document.getElementById('userShelf');
+        const opponentShelfEl = document.getElementById('opponentShelf');
+        userShelfEl.innerHTML = '';
+        opponentShelfEl.innerHTML = '';
 
-window.onload = initGame;
+        for(let i=0; i<24; i++) {
+            const slot = document.createElement('div');
+            slot.className = `star-slot ${i < userStars ? 'filled user' : ''}`;
+            slot.innerText = i < userStars ? '★' : '';
+            userShelfEl.appendChild(slot);
+        }
+
+        for(let i=0; i<24; i++) {
+            const slot = document.createElement('div');
+            slot.className = `star-slot ${i < opponentStars ? 'filled opponent' : ''}`;
+            slot.innerText = i < opponentStars ? '★' : '';
+            opponentShelfEl.appendChild(slot);
+        }
+
+        document.getElementById('userScoreText').innerText = `${userStars} / 24`;
+        document.getElementById('opponentScoreText').innerText = `${opponentStars} / 24`;
+
+        if(userStars >= 24 || opponentStars <= 0) endGame(true, "Knockout! You won all stars! 🎉");
+        if(opponentStars >= 24 || userStars <= 0) endGame(false, "You lost all your stars! ❌");
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timerSeconds--;
+            let mins = Math.floor(timerSeconds / 60);
+            let secs = timerSeconds % 60;
+            document.getElementById('timerDisplay').innerText = `T.Time ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            if(timerSeconds <= 0) {
+                clearInterval(timerInterval);
+                if(userStars > opponentStars) endGame(true, "Time's up! You won on points! 🏆");
+                else endGame(false, "Time's up! Opponent won! 😞");
+            }
+        }, 1000);
+    }
+
+    function nextWord() {
+        if(wordBank.length === 0) return;
+
+        let pool = wordBank;
+        if(userStreak >= 2) {
+            const hardPool = wordBank.filter(w => w.difficulty === 'hard');
+            if(hardPool.length > 0) pool = hardPool;
+        }
+        
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        currentWordObj = pool[randomIndex];
+        document.getElementById('currentWord').innerText = currentWordObj.word;
+        document.getElementById('currentTranslation').innerText = currentWordObj.en ? `(${currentWordObj.en})` : '';
+    }
+
+    function checkAnswer(selectedArticle) {
+        if(!currentWordObj) return;
+
+        if(selectedArticle === currentWordObj.article) {
+            userStars++;
+            opponentStars--;
+            userStreak++;
+        } else {
+            userStars--;
+            opponentStars++;
+            userStreak = 0;
+        }
+        renderShelves();
+        nextWord();
+    }
+
+    function endGame(isWin, message) {
+        clearInterval(timerInterval);
+        const overlay = document.getElementById('gameOverOverlay');
+        document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
+        document.getElementById('overlayMessage').innerText = message;
+        document.getElementById('overlayScore').innerText = `Final Score — You: ${userStars} ★ | Bot: ${opponentStars} ★`;
+        overlay.style.display = 'flex';
+    }
+
+    window.onload = initGame;
 </script>
 </body>
 </html>
