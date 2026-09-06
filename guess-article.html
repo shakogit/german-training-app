@@ -371,8 +371,23 @@
         document.getElementById('overlayScore').innerText = `Final Score — You: ${userStars} ★ | Bot: ${opponentStars} ★`;
         overlay.style.display = 'flex';
 
+        // მოგების შემთხვევაში ვრთავთ 3-ჯერად სროლას!
         if (isWin) {
+            let burstCount = 0;
+            const maxBursts = 3; // 3 გასროლა
+            
+            // პირველი გასროლა მყისიერად
             setTimeout(launchConfetti, 100);
+            
+            // მომდევნო გასროლები ინტერვალით
+            const burstInterval = setInterval(() => {
+                burstCount++;
+                if (burstCount < maxBursts) {
+                    launchConfetti();
+                } else {
+                    clearInterval(burstInterval);
+                }
+            }, 600); // ყოველ 0.6 წამში ერთხელ გაისვრის თავიდან
         }
     }
 
