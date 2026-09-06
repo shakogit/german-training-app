@@ -159,23 +159,18 @@
     </style>
 </head>
 <body>
-    
 
 <div class="game-container" style="position: relative;">
     <!-- Overlay for Win/Lose -->
-   <!-- Overlay for Win/Lose -->
-<div class="game-overlay" id="gameOverOverlay">
-    <!-- აი აქ ჩასვი ეს ხაზი 👇 -->
-    <canvas id="confettiCanvas"></canvas>
-
-    <h1 id="overlayTitle" style="color: var(--pastel-orange); margin-bottom: 10px;">Game Over</h1>
-    <p id="overlayMessage" style="color: var(--text-white); margin-bottom: 10px; font-size: 1.1rem;"></p>
-    <p id="overlayScore" style="color: var(--text-gray); margin-bottom: 20px; font-weight: 600;"></p>
-    <div class="overlay-btns">
-        <button onclick="location.reload()" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer;">Play Again 🔄</button>
-        <a href="index.html" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer; background: #444; text-decoration: none;">Hub 🏠</a>
-    </div>
-</div>
+    <div class="game-overlay" id="gameOverOverlay">
+        <canvas id="confettiCanvas"></canvas>
+        <h1 id="overlayTitle" style="color: var(--pastel-orange); margin-bottom: 10px;">Game Over</h1>
+        <p id="overlayMessage" style="color: var(--text-white); margin-bottom: 10px; font-size: 1.1rem;"></p>
+        <p id="overlayScore" style="color: var(--text-gray); margin-bottom: 20px; font-weight: 600;"></p>
+        <div class="overlay-btns">
+            <button onclick="location.reload()" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer;">Play Again 🔄</button>
+            <a href="index.html" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer; background: #444; text-decoration: none;">Hub 🏠</a>
+        </div>
     </div>
 
     <!-- Top Bar -->
@@ -221,7 +216,6 @@
     let userStreak = 0;
     let wordBank = [];
 
-    // Fisher-Yates Shuffle Algorithm for true randomness
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -239,7 +233,7 @@
             })
             .then(data => {
                 wordBank = data;
-                shuffleArray(wordBank); // Shuffle on every start
+                shuffleArray(wordBank);
                 startTimer();
                 nextWord();
             })
@@ -322,69 +316,65 @@
         nextWord();
     }
 
-   // Confetti / Particles Engine
-function launchConfetti() {
-    const canvas = document.getElementById('confettiCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    function launchConfetti() {
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
 
-    const particles = [];
-    const colors = ['#f59e0b', '#3b82f6', '#ef4444', '#10b981', '#ec4899'];
+        const particles = [];
+        const colors = ['#f59e0b', '#3b82f6', '#ef4444', '#10b981', '#ec4899'];
 
-    for (let i = 0; i < 60; i++) {
-        particles.push({
-            x: canvas.width / 2, // იწყებს შუა ზონიდან
-            y: canvas.height / 3,
-            vx: (Math.random() - 0.5) * 8,
-            vy: (Math.random() - 0.8) * 8,
-            size: Math.random() * 6 + 4,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            gravity: 0.15,
-            alpha: 1
-        });
+        for (let i = 0; i < 60; i++) {
+            particles.push({
+                x: canvas.width / 2,
+                y: canvas.height / 3,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 0.8) * 8,
+                size: Math.random() * 6 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                gravity: 0.15,
+                alpha: 1
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let activeParticles = false;
+
+            particles.forEach(p => {
+                if (p.alpha > 0) {
+                    activeParticles = true;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity;
+                    p.alpha -= 0.012;
+
+                    ctx.globalAlpha = Math.max(p.alpha, 0);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                }
+            });
+
+            if (activeParticles) {
+                requestAnimationFrame(animate);
+            }
+        }
+        animate();
     }
 
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let activeParticles = false;
+    function endGame(isWin, message) {
+        clearInterval(timerInterval);
+        const overlay = document.getElementById('gameOverOverlay');
+        document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
+        document.getElementById('overlayMessage').innerText = message;
+        document.getElementById('overlayScore').innerText = `Final Score — You: ${userStars} ★ | Bot: ${opponentStars} ★`;
+        overlay.style.display = 'flex';
 
-        particles.forEach(p => {
-            if (p.alpha > 0) {
-                activeParticles = true;
-                p.x += p.vx;
-                p.y += p.vy;
-                p.vy += p.gravity;
-                p.alpha -= 0.012;
-
-                ctx.globalAlpha = Math.max(p.alpha, 0);
-                ctx.fillStyle = p.color;
-                ctx.fillRect(p.x, p.y, p.size, p.size);
-            }
-        });
-
-        if (activeParticles) {
-            requestAnimationFrame(animate);
+        if (isWin) {
+            setTimeout(launchConfetti, 100);
         }
     }
-    animate();
-}
-
-// განახლებული endGame ფუნქცია
-function endGame(isWin, message) {
-    clearInterval(timerInterval);
-    const overlay = document.getElementById('gameOverOverlay');
-    document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
-    document.getElementById('overlayMessage').innerText = message;
-    document.getElementById('overlayScore').innerText = `Final Score — You: ${userStars} ★ | Bot: ${opponentStars} ★`;
-    overlay.style.display = 'flex';
-
-    // მოგების შემთხვევაში ვრთავთ Particles ეფექტს!
-    if (isWin) {
-        setTimeout(launchConfetti, 100);
-    }
-}
-    
 
     window.onload = initGame;
 </script>
