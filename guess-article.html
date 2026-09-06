@@ -315,6 +315,58 @@
         renderShelves();
         nextWord();
     }
+    // Rain Engine for Defeat
+function launchRain() {
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const drops = [];
+    const dropCount = 40; // წვეთების რაოდენობა
+
+    for (let i = 0; i < dropCount; i++) {
+        drops.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            length: Math.random() * 15 + 10,
+            speed: Math.random() * 8 + 6,
+            color: 'rgba(148, 163, 184, 0.6)' // სევდიანი ლურჯი/ნაცრისფერი
+        });
+    }
+
+    let animationFrame = null;
+    let startTime = Date.now();
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        drops.forEach(d => {
+            ctx.beginPath();
+            ctx.moveTo(d.x, d.y);
+            ctx.lineTo(d.x, d.y + d.length);
+            ctx.strokeStyle = d.color;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            d.y += d.speed;
+
+            // როცა წვეთი დაბლა ჩადის, ისევ ზემოდან იწყებს
+            if (d.y > canvas.height) {
+                d.y = -d.length;
+                d.x = Math.random() * canvas.width;
+            }
+        });
+
+        // 3 წამის შემდეგ წვიმა ნელ-ნელა გადაიღებს
+        if (Date.now() - startTime < 3500) {
+            requestAnimationFrame(animate);
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+    animate();
+}
 
     function launchConfetti() {
         const canvas = document.getElementById('confettiCanvas');
@@ -371,15 +423,12 @@
         document.getElementById('overlayScore').innerText = `Final Score — You: ${userStars} ★ | Bot: ${opponentStars} ★`;
         overlay.style.display = 'flex';
 
-        // მოგების შემთხვევაში ვრთავთ 3-ჯერად სროლას!
         if (isWin) {
             let burstCount = 0;
-            const maxBursts = 3; // 3 გასროლა
+            const maxBursts = 3;
             
-            // პირველი გასროლა მყისიერად
             setTimeout(launchConfetti, 100);
             
-            // მომდევნო გასროლები ინტერვალით
             const burstInterval = setInterval(() => {
                 burstCount++;
                 if (burstCount < maxBursts) {
@@ -387,7 +436,10 @@
                 } else {
                     clearInterval(burstInterval);
                 }
-            }, 600); // ყოველ 0.6 წამში ერთხელ გაისვრის თავიდან
+            }, 600);
+        } else {
+            // წაგებისას ჩაირთვება წვიმა! 🌧️
+            setTimeout(launchRain, 100);
         }
     }
 
