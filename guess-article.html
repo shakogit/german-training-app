@@ -322,14 +322,69 @@
         nextWord();
     }
 
-    function endGame(isWin, message) {
-        clearInterval(timerInterval);
-        const overlay = document.getElementById('gameOverOverlay');
-        document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
-        document.getElementById('overlayMessage').innerText = message;
-        document.getElementById('overlayScore').innerText = `Final Score — You: ${userStars} ★ | Bot: ${opponentStars} ★`;
-        overlay.style.display = 'flex';
+   // Confetti / Particles Engine
+function launchConfetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const particles = [];
+    const colors = ['#f59e0b', '#3b82f6', '#ef4444', '#10b981', '#ec4899'];
+
+    for (let i = 0; i < 60; i++) {
+        particles.push({
+            x: canvas.width / 2, // იწყებს შუა ზონიდან
+            y: canvas.height / 3,
+            vx: (Math.random() - 0.5) * 8,
+            vy: (Math.random() - 0.8) * 8,
+            size: Math.random() * 6 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            gravity: 0.15,
+            alpha: 1
+        });
     }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let activeParticles = false;
+
+        particles.forEach(p => {
+            if (p.alpha > 0) {
+                activeParticles = true;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += p.gravity;
+                p.alpha -= 0.012;
+
+                ctx.globalAlpha = Math.max(p.alpha, 0);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            }
+        });
+
+        if (activeParticles) {
+            requestAnimationFrame(animate);
+        }
+    }
+    animate();
+}
+
+// განახლებული endGame ფუნქცია
+function endGame(isWin, message) {
+    clearInterval(timerInterval);
+    const overlay = document.getElementById('gameOverOverlay');
+    document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
+    document.getElementById('overlayMessage').innerText = message;
+    document.getElementById('overlayScore').innerText = `Final Score — You: ${userStars} ★ | Bot: ${opponentStars} ★`;
+    overlay.style.display = 'flex';
+
+    // მოგების შემთხვევაში ვრთავთ Particles ეფექტს!
+    if (isWin) {
+        setTimeout(launchConfetti, 100);
+    }
+}
+    
 
     window.onload = initGame;
 </script>
