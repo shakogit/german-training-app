@@ -1,4 +1,4 @@
-const CACHE_NAME = 'visual-german-v58'; // ვერსია გავზარდეთ v2-ზე
+const CACHE_NAME = 'visual-german-v59'; // ვერსია გავზარდეთ v2-ზე
 
 // ყველა ფაილის სია, რომელიც უნდა დაკეშირდეს ოფლაინ მუშაობისთვის
 const CACHE_URLS = [
