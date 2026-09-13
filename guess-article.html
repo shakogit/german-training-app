@@ -204,15 +204,17 @@
             </div>
 
             <!-- Mistakes Review List (Element I) -->
-            <div id="mistakesCard" class="bg-error-container/40 rounded-3xl p-4 shadow-sm flex flex-col gap-2 border border-error-red/20">
-                <div class="flex items-center gap-2 text-error-red font-bold text-sm">
-                    <span class="material-symbols-outlined text-[18px]">find_in_page</span>
-                    <span>Review Mistakes</span>
-                </div>
-                <div id="mistakesList" class="flex flex-col gap-1 text-xs text-on-surface">
-                    <!-- Dynamic Mistakes items -->
-                </div>
-            </div>
+           <!-- Mistakes Review List with Fixed Height Scroll -->
+<div id="mistakesCard" class="bg-error-container/40 rounded-3xl p-4 shadow-sm flex flex-col gap-2 border border-error-red/20">
+    <div class="flex items-center gap-2 text-error-red font-bold text-sm">
+        <span class="material-symbols-outlined text-[18px]">find_in_page</span>
+        <span>Review Mistakes</span>
+    </div>
+    <!-- დავამატეთ max-h-48 overflow-y-auto, რომ შიგნით ისქროლებოდეს -->
+    <div id="mistakesList" class="flex flex-col gap-1 text-xs text-on-surface max-h-48 overflow-y-auto pr-1">
+        <!-- Dynamic Mistakes items -->
+    </div>
+</div>
 
             <!-- Action Buttons -->
             <div class="flex flex-col gap-2.5 pt-2">
