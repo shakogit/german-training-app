@@ -90,6 +90,13 @@
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 50;
         }
+        .word-translation {
+            font-size: 1rem; /* 0.85rem-იდან ავწიეთ 1rem-ზე */
+            color: var(--text-streak-orange);
+            margin-bottom: 15px;
+            font-style: italic;
+            font-weight: 600; /* დავამატეთ სისქე წაკითხვადობისთვის */
+}
     </style>
 </head>
 
@@ -161,7 +168,7 @@
         </h2>
         
         <!-- English Translation Hint -->
-        <p class="text-sm font-medium italic text-on-surface-variant mb-2" id="currentTranslation">
+        <p class="text-base font-bold italic text-streak-orange mb-2"" id="currentTranslation">
             (...)
         </p>
 
