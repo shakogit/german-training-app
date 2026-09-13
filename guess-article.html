@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS6B48F50R"></script>
@@ -10,202 +10,192 @@
 
       gtag('config', 'G-ZS6B48F50R');
     </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2c2c2c">
-    <title>Guess the Article - Tug of War</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+    <title>Visual German - Tug of War</title>
+    
+    <!-- Google Material Fonts & Tailwind CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#FFF8F6",
+            "surface-container": "#fbeae7",
+            "surface-container-low": "#FDF1EE",
+            "surface-container-lowest": "#ffffff",
+            "on-surface": "#221a18",
+            "on-surface-variant": "#56423d",
+            "primary": "#7d2b15",
+            "on-primary": "#ffffff",
+            "primary-fixed": "#ffdbd2",
+            "on-primary-fixed": "#3c0800",
+            "gender-der": "#1D64B4",
+            "gender-der-container": "#D2E4FF",
+            "gender-die": "#B3264D",
+            "gender-die-container": "#FFD9E1",
+            "gender-das": "#8A5100",
+            "gender-das-container": "#FFDDB8",
+            "streak-orange": "#F97316",
+            "error-red": "#EF4444",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a",
+            "success-green": "#22C55E",
+            "tertiary": "#692a7c",
+            "tertiary-fixed": "#fbd7ff"
+          },
+          fontFamily: {
+            sans: ["Roboto Flex", "sans-serif"]
+          }
+        }
+      }
+    };
+    </script>
+
     <style>
-        .game-container {
-            width: 100%;
-            max-width: 420px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            text-align: center;
-        }
-
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .timer-badge {
-            background: #222;
-            border: 1px solid var(--pastel-orange);
-            color: var(--pastel-orange);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .shelf-title {
-            font-size: 0.75rem;
-            color: var(--text-gray);
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 5px;
-        }
-
-        .star-shelf {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            background: rgba(0,0,0,0.25);
-            padding: 10px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #444;
-        }
-
+        body { overscroll-behavior: none; background-color: #FFF8F6; }
+        ::-webkit-scrollbar { display: none; }
         .star-slot {
-            height: 32px;
+            height: 28px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            background: #2a2a2a;
-            border: 1px dashed #444;
+            font-size: 1rem;
+            background: #f1e5e2;
+            border: 1px dashed #dcc1ba;
             transition: all 0.3s ease;
         }
-
         .star-slot.filled.user {
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid #3b82f6;
-            color: #60a5fa;
-            text-shadow: 0 0 8px #3b82f6;
-        }
-
-        .star-slot.filled.opponent {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid #ef4444;
-            color: #f87171;
-            text-shadow: 0 0 8px #ef4444;
-        }
-
-        .word-card {
-            background: #2a2a2a;
-            border-radius: 16px;
-            padding: 20px 15px;
-            margin: 15px 0;
-            border: 2px solid var(--pastel-orange);
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
-        }
-
-        .target-word {
-            font-size: 2rem;
-            font-weight: 800;
+            background: #1D64B4;
+            border: 1px solid #1D64B4;
             color: #ffffff;
-            letter-spacing: 1px;
-            margin-bottom: 2px;
+            box-shadow: 0 0 8px rgba(29, 100, 180, 0.5);
         }
-
-        .word-translation {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            margin-bottom: 15px;
-            font-style: italic;
+        .star-slot.filled.opponent {
+            background: #B3264D;
+            border: 1px solid #B3264D;
+            color: #ffffff;
+            box-shadow: 0 0 8px rgba(179, 38, 77, 0.5);
         }
-
-        .article-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .btn-article {
-            flex: 1;
-            padding: 14px 0;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            cursor: pointer;
-            color: white;
-            transition: transform 0.1s, filter 0.2s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .btn-article:active { transform: scale(0.95); }
-
-        .btn-der { background: #2563eb; }
-        .btn-die { background: #dc2626; }
-        .btn-das { background: #16a34a; }
-
-        .game-overlay {
-            display: none;
+        #confettiCanvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            border-radius: 20px;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            padding: 20px;
-        }
-
-        .overlay-btns {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            pointer-events: none; z-index: 50;
         }
     </style>
 </head>
-<body>
 
-<div class="game-container" style="position: relative;">
-    <!-- Overlay for Win/Lose -->
-    <div class="game-overlay" id="gameOverOverlay">
+<body class="bg-surface font-sans text-on-surface flex flex-col min-h-screen antialiased">
+
+<!-- TOP HEADER -->
+<header class="fixed top-0 w-full z-40 bg-surface/90 backdrop-blur-xl shadow-sm">
+    <div class="h-16 px-4 max-w-[480px] mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <a href="guess-lib.html" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <h1 class="font-bold text-lg text-on-surface">Tug of War</h1>
+        </div>
+        
+        <!-- Timer Display -->
+        <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-streak-orange border border-streak-orange/30">
+            <span class="material-symbols-outlined text-[18px]">timer</span>
+            <span class="font-bold text-sm tabular-nums" id="timerDisplay">04:00</span>
+        </div>
+    </div>
+</header>
+
+<!-- MAIN GAME CONTAINER -->
+<main class="flex flex-col relative w-full pt-16 bg-surface min-h-screen max-w-[480px] mx-auto pb-6 px-4 select-none gap-4">
+
+    <!-- GAME OVER OVERLAY (Victory / Defeat) -->
+    <div id="gameOverOverlay" class="hidden absolute inset-0 bg-on-surface/80 backdrop-blur-md z-50 rounded-3xl flex-col items-center justify-center p-6 text-center">
         <canvas id="confettiCanvas"></canvas>
-        <h1 id="overlayTitle" style="color: var(--pastel-orange); margin-bottom: 10px;">Game Over</h1>
-        <p id="overlayMessage" style="color: var(--text-white); margin-bottom: 10px; font-size: 1.1rem;"></p>
-        <p id="overlayScore" style="color: var(--text-gray); margin-bottom: 20px; font-weight: 600;"></p>
-        <div class="overlay-btns">
-            <button onclick="location.reload()" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer;">Play Again 🔄</button>
-            <a href="index.html" class="start-btn-badge" style="padding: 12px 20px; font-size: 0.9rem; cursor: pointer; background: #444; text-decoration: none;">Hub 🏠</a>
+        <h1 id="overlayTitle" class="text-3xl font-black text-streak-orange mb-2">Game Over</h1>
+        <p id="overlayMessage" class="text-white text-lg mb-2 font-medium"></p>
+        <p id="overlayScore" class="text-gray-300 text-sm mb-6 font-semibold"></p>
+        <div class="flex gap-3 z-50">
+            <button onclick="location.reload()" class="px-6 py-3 rounded-full bg-streak-orange text-white font-bold shadow-lg active:scale-95 transition-transform">Play Again 🔄</button>
+            <a href="index.html" class="px-6 py-3 rounded-full bg-white/20 text-white font-bold shadow-lg active:scale-95 transition-transform">Hub 🏠</a>
         </div>
     </div>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <a href="guess-lib.html" class="back-link" style="margin: 0;">← Back</a>
-        <div class="timer-badge" id="timerDisplay">T.Time 04:00</div>
-    </div>
-
-    <!-- User Shelf -->
-    <div class="shelf-title">
-        <span>USER SHELF</span>
-        <span id="userScoreText">12 / 24</span>
-    </div>
-    <div class="star-shelf" id="userShelf"></div>
-
-    <!-- Gameplay Zone -->
-    <div class="word-card">
-        <div class="target-word" id="currentWord">Loading...</div>
-        <div class="word-translation" id="currentTranslation">...</div>
-        <div class="article-buttons">
-            <button class="btn-article btn-der" onclick="checkAnswer('der')">der</button>
-            <button class="btn-article btn-die" onclick="checkAnswer('die')">die</button>
-            <button class="btn-article btn-das" onclick="checkAnswer('das')">das</button>
+    <!-- STAR SHELVES ARENA -->
+    <section class="flex flex-col gap-3 bg-surface-container-low p-4 rounded-2xl shadow-sm border border-outline-variant/30 mt-2">
+        <!-- USER SHELF -->
+        <div>
+            <div class="flex justify-between items-center text-xs font-bold text-gender-der mb-1.5 px-1">
+                <span>USER SHELF (YOU)</span>
+                <span id="userScoreText">12 / 24</span>
+            </div>
+            <div class="grid grid-cols-6 gap-1.5 bg-white/60 p-2 rounded-xl" id="userShelf"></div>
         </div>
-    </div>
 
-    <!-- Opponent Shelf -->
-    <div class="shelf-title">
-        <span>OPPONENT SHELF</span>
-        <span id="opponentScoreText">12 / 24</span>
-    </div>
-    <div class="star-shelf" id="opponentShelf"></div>
+        <!-- OPPONENT SHELF -->
+        <div>
+            <div class="flex justify-between items-center text-xs font-bold text-gender-die mb-1.5 px-1">
+                <span>BOT SHELF (OPPONENT)</span>
+                <span id="opponentScoreText">12 / 24</span>
+            </div>
+            <div class="grid grid-cols-6 gap-1.5 bg-white/60 p-2 rounded-xl" id="opponentShelf"></div>
+        </div>
+    </section>
 
-    <div class="stealth-footer">Tug-of-War • Visual German</div>
-</div>
+    <!-- CENTRAL GERMAN WORD DRILL PODIUM (MD3 Elevated Card) -->
+    <section class="bg-surface-container-lowest rounded-2xl p-6 shadow-md flex flex-col items-center text-center gap-2 border border-outline-variant/20">
+        <div class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold">
+            Nouns Practice • A1-A2
+        </div>
+        
+        <!-- Target German Word -->
+        <h2 class="text-4xl font-black text-on-surface tracking-tight mt-2" id="currentWord">
+            Loading...
+        </h2>
+        
+        <!-- English Translation Hint -->
+        <p class="text-sm font-medium italic text-on-surface-variant mb-2" id="currentTranslation">
+            (...)
+        </p>
+
+        <p class="text-xs text-on-surface-variant/80">Select the correct article to pull stars!</p>
+    </section>
+
+    <!-- TACTILE 3-WAY ARTICLE TRIO BUTTONS (DER / DIE / DAS) -->
+    <section class="grid grid-cols-3 gap-3 w-full">
+        <!-- DER Button -->
+        <button class="flex flex-col items-center justify-between p-3.5 rounded-2xl bg-gender-der text-white shadow-md active:scale-95 transition-transform min-h-[96px]" onclick="checkAnswer('der')">
+            <span class="text-[10px] uppercase font-bold opacity-80">Maskulin</span>
+            <span class="text-2xl font-black tracking-wide">DER</span>
+            <span class="text-[11px] opacity-75 font-medium">der Tisch</span>
+        </button>
+
+        <!-- DIE Button -->
+        <button class="flex flex-col items-center justify-between p-3.5 rounded-2xl bg-gender-die text-white shadow-md active:scale-95 transition-transform min-h-[96px]" onclick="checkAnswer('die')">
+            <span class="text-[10px] uppercase font-bold opacity-80">Feminin</span>
+            <span class="text-2xl font-black tracking-wide">DIE</span>
+            <span class="text-[11px] opacity-75 font-medium">die Lampe</span>
+        </button>
+
+        <!-- DAS Button -->
+        <button class="flex flex-col items-center justify-between p-3.5 rounded-2xl bg-gender-das text-white shadow-md active:scale-95 transition-transform min-h-[96px]" onclick="checkAnswer('das')">
+            <span class="text-[10px] uppercase font-bold opacity-80">Neutrum</span>
+            <span class="text-2xl font-black tracking-wide">DAS</span>
+            <span class="text-[11px] opacity-75 font-medium">das Auto</span>
+        </button>
+    </section>
+
+    <div class="text-center text-xs text-on-surface-variant/60 italic mt-auto">
+        Tug-of-War • Visual German Arcade
+    </div>
+</main>
 
 <script>
     let userStars = 12;
@@ -275,7 +265,7 @@
             timerSeconds--;
             let mins = Math.floor(timerSeconds / 60);
             let secs = timerSeconds % 60;
-            document.getElementById('timerDisplay').innerText = `T.Time ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 
             if(timerSeconds <= 0) {
                 clearInterval(timerInterval);
@@ -315,59 +305,8 @@
         renderShelves();
         nextWord();
     }
-    // Rain Engine for Defeat
-function launchRain() {
-    const canvas = document.getElementById('confettiCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
 
-    const drops = [];
-    const dropCount = 40; // წვეთების რაოდენობა
-
-    for (let i = 0; i < dropCount; i++) {
-        drops.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height - canvas.height,
-            length: Math.random() * 15 + 10,
-            speed: Math.random() * 8 + 6,
-            color: 'rgba(148, 163, 184, 0.6)' // სევდიანი ლურჯი/ნაცრისფერი
-        });
-    }
-
-    let animationFrame = null;
-    let startTime = Date.now();
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        drops.forEach(d => {
-            ctx.beginPath();
-            ctx.moveTo(d.x, d.y);
-            ctx.lineTo(d.x, d.y + d.length);
-            ctx.strokeStyle = d.color;
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-
-            d.y += d.speed;
-
-            // როცა წვეთი დაბლა ჩადის, ისევ ზემოდან იწყებს
-            if (d.y > canvas.height) {
-                d.y = -d.length;
-                d.x = Math.random() * canvas.width;
-            }
-        });
-
-        // 3 წამის შემდეგ წვიმა ნელ-ნელა გადაიღებს
-        if (Date.now() - startTime < 3500) {
-            requestAnimationFrame(animate);
-        } else {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-    }
-    animate();
-}
-
+    // Confetti Engine
     function launchConfetti() {
         const canvas = document.getElementById('confettiCanvas');
         const ctx = canvas.getContext('2d');
@@ -379,38 +318,60 @@ function launchRain() {
 
         for (let i = 0; i < 60; i++) {
             particles.push({
-                x: canvas.width / 2,
-                y: canvas.height / 3,
-                vx: (Math.random() - 0.5) * 8,
-                vy: (Math.random() - 0.8) * 8,
+                x: canvas.width / 2, y: canvas.height / 3,
+                vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.8) * 8,
                 size: Math.random() * 6 + 4,
                 color: colors[Math.floor(Math.random() * colors.length)],
-                gravity: 0.15,
-                alpha: 1
+                gravity: 0.15, alpha: 1
             });
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             let activeParticles = false;
-
             particles.forEach(p => {
                 if (p.alpha > 0) {
                     activeParticles = true;
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += p.gravity;
-                    p.alpha -= 0.012;
-
+                    p.x += p.vx; p.y += p.vy; p.vy += p.gravity; p.alpha -= 0.012;
                     ctx.globalAlpha = Math.max(p.alpha, 0);
                     ctx.fillStyle = p.color;
                     ctx.fillRect(p.x, p.y, p.size, p.size);
                 }
             });
+            if (activeParticles) requestAnimationFrame(animate);
+        }
+        animate();
+    }
 
-            if (activeParticles) {
-                requestAnimationFrame(animate);
-            }
+    // Rain Engine for Defeat
+    function launchRain() {
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+
+        const drops = [];
+        for (let i = 0; i < 40; i++) {
+            drops.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                length: Math.random() * 15 + 10,
+                speed: Math.random() * 8 + 6,
+                color: 'rgba(148, 163, 184, 0.6)'
+            });
+        }
+
+        let startTime = Date.now();
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drops.forEach(d => {
+                ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x, d.y + d.length);
+                ctx.strokeStyle = d.color; ctx.lineWidth = 1.5; ctx.stroke();
+                d.y += d.speed;
+                if (d.y > canvas.height) { d.y = -d.length; d.x = Math.random() * canvas.width; }
+            });
+            if (Date.now() - startTime < 3500) requestAnimationFrame(animate);
+            else ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
         animate();
     }
@@ -421,24 +382,18 @@ function launchRain() {
         document.getElementById('overlayTitle').innerText = isWin ? "Victory! 🎉" : "Defeat ❌";
         document.getElementById('overlayMessage').innerText = message;
         document.getElementById('overlayScore').innerText = `Final Score — You: ${userStars} ★ | Bot: ${opponentStars} ★`;
-        overlay.style.display = 'flex';
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
 
         if (isWin) {
             let burstCount = 0;
-            const maxBursts = 3;
-            
             setTimeout(launchConfetti, 100);
-            
             const burstInterval = setInterval(() => {
                 burstCount++;
-                if (burstCount < maxBursts) {
-                    launchConfetti();
-                } else {
-                    clearInterval(burstInterval);
-                }
+                if (burstCount < 3) launchConfetti();
+                else clearInterval(burstInterval);
             }, 600);
         } else {
-            // წაგებისას ჩაირთვება წვიმა! 🌧️
             setTimeout(launchRain, 100);
         }
     }
