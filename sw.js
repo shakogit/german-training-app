@@ -1,4 +1,4 @@
-const CACHE_NAME = 'visual-german-v75'; // ვერსია გავზარდეთ v2-ზე
+const CACHE_NAME = 'visual-german-v77'; // ვერსია გავზარდეთ v2-ზე
 
 // ყველა ფაილის სია, რომელიც უნდა დაკეშირდეს ოფლაინ მუშაობისთვის
 const CACHE_URLS = [
@@ -8,9 +8,11 @@ const CACHE_URLS = [
   './quiz.html',
   './guess-lib.html',
   './guess-article.html',
+  './sentence-builder.html',
   './style.css',
   './data/topics.json',
-  './data/articles.json'
+  './data/articles.json',
+  './data/sentences.json'
 ];
 
 // 1. Install Event - ფაილების ქეშში ჩაწერა

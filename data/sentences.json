@@ -1,0 +1,47 @@
+[
+  {
+    "sentenceId": "sentence_001",
+    "topic": "Dative Prepositions & Transport",
+    "level": "A2-B1",
+    "imageAsset": "assets/girl_bike.svg",
+    "fullSentence": "Das Mädchen fährt mit dem Fahrrad zur Universität.",
+    "grammarBreakdown": {
+      "subject": "Das Mädchen (Neuter Nominative)",
+      "verb": "fährt (3rd person singular, Position 2)",
+      "prepPhrase1": "mit dem Fahrrad (Dative: mit + das -> dem)",
+      "prepPhrase2": "zur Universität (Dative contraction: zu + der -> zur)"
+    },
+    "steps": [
+      {
+        "stepId": 1,
+        "prompt": "Who is performing the action? Choose Subject + Article.",
+        "options": ["der Junge", "die Frau", "das Mädchen", "die Mädchen"],
+        "correctIndex": 2,
+        "hintText": "Girl is 'Mädchen'. Words with '-chen' suffix are ALWAYS neuter (das).",
+        "videoUrl": "https://www.youtube.com/embed/YOUR_SHORT_ID_1"
+      },
+      {
+        "stepId": 2,
+        "prompt": "Select the correct conjugated verb (Position 2).",
+        "options": ["fahre", "fährt", "fahren", "fahrst"],
+        "correctIndex": 1,
+        "hintText": "Main verb must be in Position 2. For 3rd person singular (sie/es), 'fahren' becomes 'fährt'.",
+        "videoUrl": "https://www.youtube.com/embed/YOUR_SHORT_ID_2"
+      },
+      {
+        "stepId": 3,
+        "prompt": "Complete the prepositional phrases (Means + Direction).",
+        "options": [
+          "mit das Fahrrad, zu die Universität",
+          "mit dem Fahrrad, zur Universität",
+          "nach Fahrrad, zum Universität",
+          "mit den Fahrrad, zu der Universität"
+        ],
+        "correctIndex": 1,
+        "hintText": "'mit' requires Dative (das -> dem). 'zu' requires Dative (die -> der -> zur).",
+        "videoUrl": "https://www.youtube.com/embed/YOUR_SHORT_ID_3"
+      }
+    ],
+    "wordBank": ["Das", "Mädchen", "fährt", "mit", "dem", "Fahrrad", "zur", "Universität"]
+  }
+]
